@@ -1,0 +1,2 @@
+A set of custom attributes and an analysis engine that checks classes for
+thread safety using the Roslyn API.
