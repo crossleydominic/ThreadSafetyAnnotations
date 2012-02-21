@@ -1,0 +1,12 @@
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.VSCodeIssue.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.VSCodeIssue.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.VSCodeIssue.vsix
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\extension.vsixmanifest
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\obj\Debug\ResolveAssemblyReference.cache
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\obj\Debug\ThreadSafetyAnnotations.VSCodeIssue.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\obj\Debug\ThreadSafetyAnnotations.VSCodeIssue.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\obj\Debug\extension.vsixmanifest
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.Attributes.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.Engine.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.Attributes.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.VSCodeIssue\bin\Debug\ThreadSafetyAnnotations.Engine.pdb

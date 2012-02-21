@@ -1,0 +1,10 @@
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.WorkspaceInspector.exe
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.WorkspaceInspector.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\obj\x86\Debug\ThreadSafetyAnnotations.WorkspaceInspector.exe
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\obj\x86\Debug\ThreadSafetyAnnotations.WorkspaceInspector.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.WorkspaceInspector.exe.config
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.Engine.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.Engine.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.Attributes.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.WorkspaceInspector\bin\Debug\ThreadSafetyAnnotations.Attributes.pdb

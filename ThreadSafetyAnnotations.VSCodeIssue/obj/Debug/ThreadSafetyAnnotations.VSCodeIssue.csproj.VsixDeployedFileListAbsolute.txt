@@ -1,0 +1,6 @@
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\ThreadSafetyAnnotations.VSCodeIssue.dll
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\extension.vsixmanifest
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\ThreadSafetyAnnotations.Attributes.dll
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\ThreadSafetyAnnotations.Engine.dll
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\ThreadSafetyAnnotations.Attributes.pdb
+C:\Users\dominic.crossley\AppData\Local\Microsoft\VisualStudio\10.0Roslyn\Extensions\Microsoft\ThreadSafetyAnnotations.VSCodeIssue\1.0\\ThreadSafetyAnnotations.Engine.pdb

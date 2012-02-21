@@ -1,0 +1,7 @@
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\bin\Debug\ThreadSafetyAnnotations.Engine.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\bin\Debug\ThreadSafetyAnnotations.Engine.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\obj\Debug\ResolveAssemblyReference.cache
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\obj\Debug\ThreadSafetyAnnotations.Engine.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\obj\Debug\ThreadSafetyAnnotations.Engine.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\bin\Debug\ThreadSafetyAnnotations.Attributes.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine\bin\Debug\ThreadSafetyAnnotations.Attributes.pdb

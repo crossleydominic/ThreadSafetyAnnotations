@@ -1,0 +1,7 @@
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\bin\Debug\ThreadSafetyAnnotations.TestConsumer.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\bin\Debug\ThreadSafetyAnnotations.TestConsumer.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\bin\Debug\ThreadSafetyAnnotations.Attributes.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\bin\Debug\ThreadSafetyAnnotations.Attributes.pdb
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\obj\Debug\ResolveAssemblyReference.cache
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\obj\Debug\ThreadSafetyAnnotations.TestConsumer.dll
+C:\Dev\MySolutions\DOTNET\ThreadSafetyAnnotations\ThreadSafetyAnnotations.TestConsumer\obj\Debug\ThreadSafetyAnnotations.TestConsumer.pdb
