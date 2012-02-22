@@ -35,9 +35,11 @@ namespace ThreadSafetyAnnotations.Engine
 
             _isPrivate = false;
             _protectingLockNames = new List<string>();
+
+            DiscoverInformation();
         }
 
-        public List<Issue> Analyze()
+        /*public List<Issue> Analyze()
         {
             DiscoverInformation();
 
@@ -62,7 +64,7 @@ namespace ThreadSafetyAnnotations.Engine
             }
 
             return issues;
-        }
+        }*/
 
         private void DiscoverInformation()
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
-    internal class GuardedMemberInNonThreadSafeClassRule : AnalysisRule<ClassInfo>
+    internal class GuardedMemberInNonThreadSafeClassRule : ClassRule
     {
         protected override bool OnAnalyze(ClassInfo target)
         {

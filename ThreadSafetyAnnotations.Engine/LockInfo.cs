@@ -35,9 +35,11 @@ namespace ThreadSafetyAnnotations.Engine
             _isPrivate = false;
             _lockName = string.Empty;
             _isSystemObjectType = false;
+
+            DiscoverLockInformation();
         }
 
-        public List<Issue> Analyze()
+        /*public List<Issue> Analyze()
         {
             DiscoverLockInformation();
 
@@ -62,7 +64,7 @@ namespace ThreadSafetyAnnotations.Engine
             }
 
             return issues;
-        }
+        }*/
 
         private void DiscoverLockInformation()
         {

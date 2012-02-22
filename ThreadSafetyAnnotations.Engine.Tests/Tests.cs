@@ -28,6 +28,22 @@ namespace ThreadSafetyAnnotations.Engine.Tests
         }
 
         [Test]
+        public void ClassWithLockProtectingNothing_CausesIssue()
+        {
+            List<Issue> issues = Analyze(@"    
+                [ThreadSafe]
+                public class ClassUnderTest
+                {
+                    [Lock]
+                    public object _lock1;
+                }");
+
+            Assert.IsNotNull(issues);
+            Assert.GreaterOrEqual(issues.Count, 1);
+            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_PROTECTS_NOTHING));
+        }
+
+        [Test]
         public void ClassWithProtectedLock_CausesIssue()
         {
             List<Issue> issues = Analyze(@"    
