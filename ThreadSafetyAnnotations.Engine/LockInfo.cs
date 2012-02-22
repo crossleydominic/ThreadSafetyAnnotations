@@ -7,11 +7,8 @@ using Roslyn.Compilers.Common;
 
 namespace ThreadSafetyAnnotations.Engine
 {
-    internal class LockInfo
+    internal class LockInfo : BaseInfo<VariableDeclaratorSyntax, FieldSymbol>
     {
-        private VariableDeclaratorSyntax _lockDeclaration;
-        private ISemanticModel _semanticModel;
-        private FieldSymbol _lockSymbol;
         private ClassInfo _parentClass;
 
         private bool _isPrivate;
@@ -20,8 +17,9 @@ namespace ThreadSafetyAnnotations.Engine
 
         public LockInfo(
             ClassInfo parentClass,
-            VariableDeclaratorSyntax lockDeclaration, 
+            VariableDeclaratorSyntax lockDeclaration,
             ISemanticModel semanticModel)
+            : base(lockDeclaration, semanticModel)
         {
             #region Input validation
 
@@ -30,22 +28,9 @@ namespace ThreadSafetyAnnotations.Engine
                 throw new ArgumentNullException("parentClass");
             }
 
-            if (lockDeclaration == null)
-            {
-                throw new ArgumentNullException("lockDeclaration");
-            }
-
-            if (semanticModel == null)
-            {
-                throw new ArgumentNullException("semanticModel");
-            }
-
             #endregion
 
             _parentClass = parentClass;
-            _lockDeclaration = lockDeclaration;
-            _semanticModel = semanticModel;
-            _lockSymbol = (FieldSymbol)_semanticModel.GetDeclaredSymbol(lockDeclaration);
 
             _isPrivate = false;
             _lockName = string.Empty;
@@ -61,19 +46,19 @@ namespace ThreadSafetyAnnotations.Engine
             if (!_isPrivate)
             {
                 issues.Add(new Issue(
-                    string.Format("Declared lock '{0}' must be declared private", _lockName), 
+                    string.Format("Declared lock '{0}' must be declared private", _lockName),
                     ErrorCode.LOCK_IS_NOT_PRIVATE,
-                    _lockDeclaration, 
-                    _lockSymbol));
+                    Declaration,
+                    Symbol));
             }
 
             if (!_isSystemObjectType)
             {
                 issues.Add(new Issue(
-                    string.Format("Declared lock '{0}' must be of type System.Object", _lockName), 
+                    string.Format("Declared lock '{0}' must be of type System.Object", _lockName),
                     ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT,
-                    _lockDeclaration,
-                    _lockSymbol));
+                    Declaration,
+                    Symbol));
             }
 
             return issues;
@@ -81,13 +66,11 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverLockInformation()
         {
-            _isPrivate = _lockSymbol.DeclaredAccessibility == Accessibility.Private;
-            _lockName = _lockDeclaration.Identifier.GetText();
-            _isSystemObjectType = _lockSymbol.Type.SpecialType == Roslyn.Compilers.SpecialType.System_Object;
+            _isPrivate = Symbol.DeclaredAccessibility == Accessibility.Private;
+            _lockName = Declaration.Identifier.GetText();
+            _isSystemObjectType = Symbol.Type.SpecialType == Roslyn.Compilers.SpecialType.System_Object;
         }
 
         public string LockName { get { return _lockName; } }
-        public FieldSymbol Symbol { get { return _lockSymbol; } }
-        public VariableDeclaratorSyntax Declaration { get { return _lockDeclaration; } }
     }
 }

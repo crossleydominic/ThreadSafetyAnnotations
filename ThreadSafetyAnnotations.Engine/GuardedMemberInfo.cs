@@ -8,11 +8,8 @@ using System.Collections.ObjectModel;
 
 namespace ThreadSafetyAnnotations.Engine
 {
-    internal class GuardedMemberInfo
+    internal class GuardedMemberInfo : BaseInfo<VariableDeclaratorSyntax, FieldSymbol>
     {
-        private VariableDeclaratorSyntax _guardedMemberDeclaration;
-        private ISemanticModel _semanticModel;
-        private FieldSymbol _guardedMemberSymbol;
         private ClassInfo _parentClass;
 
         private bool _isPrivate;
@@ -21,8 +18,9 @@ namespace ThreadSafetyAnnotations.Engine
 
         public GuardedMemberInfo(
             ClassInfo parentClass,
-            VariableDeclaratorSyntax guardedMemberDeclaration, 
+            VariableDeclaratorSyntax guardedMemberDeclaration,
             ISemanticModel semanticModel)
+            : base(guardedMemberDeclaration, semanticModel)
         {
             #region Input validation
 
@@ -31,22 +29,9 @@ namespace ThreadSafetyAnnotations.Engine
                 throw new ArgumentNullException("parentClass");
             }
 
-            if (guardedMemberDeclaration == null)
-            {
-                throw new ArgumentNullException("guardedMemberDeclaration");
-            }
-
-            if (semanticModel == null)
-            {
-                throw new ArgumentNullException("semanticModel");
-            }
-
             #endregion
 
             _parentClass = parentClass;
-            _guardedMemberDeclaration = guardedMemberDeclaration;
-            _semanticModel = semanticModel;
-            _guardedMemberSymbol = (FieldSymbol)_semanticModel.GetDeclaredSymbol(guardedMemberDeclaration);
 
             _isPrivate = false;
             _protectingLockNames = new List<string>();
@@ -61,19 +46,19 @@ namespace ThreadSafetyAnnotations.Engine
             if (!_isPrivate)
             {
                 issues.Add(new Issue(
-                    string.Format("Declared guarded member '{0}' must be declared private", _guardedMemberName), 
+                    string.Format("Declared guarded member '{0}' must be declared private", _guardedMemberName),
                     ErrorCode.GUARDED_MEMBER_IS_NOT_PRIVATE,
-                    _guardedMemberDeclaration, 
-                    _guardedMemberSymbol));
+                    Declaration,
+                    Symbol));
             }
 
             if (_protectingLockNames.Count == 0)
             {
                 issues.Add(new Issue(
-                    string.Format("Declared guarded member '{0}' must be protected by at least one lock", _guardedMemberName), 
+                    string.Format("Declared guarded member '{0}' must be protected by at least one lock", _guardedMemberName),
                     ErrorCode.GUARDED_MEMBER_NOT_ASSOCIATED_WITH_A_LOCK,
-                    _guardedMemberDeclaration, 
-                    _guardedMemberSymbol));
+                    Declaration,
+                    Symbol));
             }
 
             return issues;
@@ -81,15 +66,13 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverInformation()
         {
-            _isPrivate = _guardedMemberSymbol.DeclaredAccessibility == Accessibility.Private;
-            _guardedMemberName = _guardedMemberDeclaration.Identifier.GetText();
+            _isPrivate = Symbol.DeclaredAccessibility == Accessibility.Private;
+            _guardedMemberName = Declaration.Identifier.GetText();
 
-            _protectingLockNames = _guardedMemberSymbol.GetGuardedByLockNames();
+            _protectingLockNames = Symbol.GetGuardedByLockNames();
         }
 
         public string GuardedMemberName { get { return _guardedMemberName; } }
         public ReadOnlyCollection<string> ProtectingLockNames { get { return _protectingLockNames.AsReadOnly(); } }
-        public FieldSymbol Symbol { get { return _guardedMemberSymbol; } }
-        public VariableDeclaratorSyntax Declaration { get { return _guardedMemberDeclaration; } }
     }
 }

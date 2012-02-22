@@ -8,38 +8,16 @@ using ThreadSafetyAnnotations.Attributes;
 
 namespace ThreadSafetyAnnotations.Engine
 {
-    internal class ClassInfo
+    internal class ClassInfo : BaseInfo<ClassDeclarationSyntax, ISymbol>
     {
-        private ClassDeclarationSyntax _classDeclaration;
-        private ISemanticModel _semanticModel;
-        private ISymbol _classSymbol;
-
         private List<LockInfo> _locks;
         private List<GuardedMemberInfo> _guardedMembers;
         private bool _isMarkedWithThreadSafeAttribute;
         private bool _isPartialClass;
 
-        public ClassInfo(ClassDeclarationSyntax classDeclaration,
-            ISemanticModel semanticModel)
+        public ClassInfo(ClassDeclarationSyntax classDeclaration, ISemanticModel semanticModel)
+            : base(classDeclaration, semanticModel)
         {
-            #region Input validation
-
-            if (classDeclaration == null)
-            {
-                throw new ArgumentNullException("classDeclaration");
-            }
-
-            if (semanticModel == null)
-            {
-                throw new ArgumentNullException("semanticModel");
-            }
-
-            #endregion
-
-            _classDeclaration = classDeclaration;
-            _semanticModel = semanticModel;
-            _classSymbol = _semanticModel.GetDeclaredSymbol(classDeclaration);
-
             _locks = new List<LockInfo>();
             _guardedMembers = new List<GuardedMemberInfo>();
             _isMarkedWithThreadSafeAttribute = false;
@@ -50,13 +28,13 @@ namespace ThreadSafetyAnnotations.Engine
             List<Issue> issues = new List<Issue>();
 
             DiscoverClassInformation();
-            DiscoverMemberInformation<LockAttribute>((cls,var,model)=>_locks.Add(new LockInfo(cls, var, model)));
+            DiscoverMemberInformation<LockAttribute>((cls, var, model) => _locks.Add(new LockInfo(cls, var, model)));
             DiscoverMemberInformation<GuardedByAttribute>((cls, var, model) => _guardedMembers.Add(new GuardedMemberInfo(cls, var, model)));
 
             issues.AddRange(AnalyzeLocks());
             issues.AddRange(AnalyzeGuardedMembers());
             issues.AddRange(AnalyzeClass());
-            
+
             return issues;
         }
 
@@ -70,22 +48,22 @@ namespace ThreadSafetyAnnotations.Engine
                 _isMarkedWithThreadSafeAttribute == false)
             {
                 issues.Add(new Issue(
-                    "Class is not marked with the ThreadSafeAttribute but contains a guarded member.", 
+                    "Class is not marked with the ThreadSafeAttribute but contains a guarded member.",
                     ErrorCode.GUARDED_MEMBER_IN_A_NON_THREAD_SAFE_CLASS,
-                    _classDeclaration,
-                    _classSymbol));
+                    Declaration,
+                    Symbol));
             }
 
             if (_locks.Count > 0 &&
                 _isMarkedWithThreadSafeAttribute == false)
             {
                 issues.Add(new Issue(
-                    "Class is not marked with the ThreadSafeAttribute but contains a lock.", 
+                    "Class is not marked with the ThreadSafeAttribute but contains a lock.",
                     ErrorCode.LOCK_IN_A_NON_THREAD_SAFE_CLASS,
-                    _classDeclaration,
-                    _classSymbol));
+                    Declaration,
+                    Symbol));
             }
-                
+
 
             return issues;
         }
@@ -102,10 +80,10 @@ namespace ThreadSafetyAnnotations.Engine
                     if (!_locks.Any(l => l.LockName == protectingLockname))
                     {
                         issues.Add(new Issue(
-                            string.Format("Declared member '{0}' references unknown lock '{1}'", guardedMember.GuardedMemberName, protectingLockname), 
+                            string.Format("Declared member '{0}' references unknown lock '{1}'", guardedMember.GuardedMemberName, protectingLockname),
                             ErrorCode.GUARDED_MEMBER_REFERENCES_UNKNOWN_LOCK,
-                            guardedMember.Declaration, 
-                            guardedMember.Symbol)); 
+                            guardedMember.Declaration,
+                            guardedMember.Symbol));
                     }
                 }
             }
@@ -116,9 +94,9 @@ namespace ThreadSafetyAnnotations.Engine
                 if (!_guardedMembers.Any(g => g.ProtectingLockNames.Any(p => p == lockInfo.LockName)))
                 {
                     issues.Add(new Issue(
-                        string.Format("Declared lock '{0}' is not guarding any member.", lockInfo.LockName), 
+                        string.Format("Declared lock '{0}' is not guarding any member.", lockInfo.LockName),
                         ErrorCode.LOCK_PROTECTS_NOTHING,
-                        lockInfo.Declaration, 
+                        lockInfo.Declaration,
                         lockInfo.Symbol));
                 }
             }
@@ -151,9 +129,9 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverMemberInformation<TAttribute>(Action<ClassInfo, VariableDeclaratorSyntax, ISemanticModel> discoveredAction)
         {
-            foreach (MemberDeclarationSyntax memberDeclaration in _classDeclaration.DescendentNodes().OfType<MemberDeclarationSyntax>())
+            foreach (MemberDeclarationSyntax memberDeclaration in Declaration.DescendentNodes().OfType<MemberDeclarationSyntax>())
             {
-                ISymbol memberSymbol = _semanticModel.GetDeclaredSymbol(memberDeclaration);
+                ISymbol memberSymbol = SemanticModel.GetDeclaredSymbol(memberDeclaration);
 
                 if (memberSymbol.HasCustomAttribute<TAttribute>())
                 {
@@ -161,7 +139,7 @@ namespace ThreadSafetyAnnotations.Engine
                     {
                         foreach (VariableDeclaratorSyntax variableDeclaration in variableDeclarationSet.Variables)
                         {
-                            discoveredAction(this, variableDeclaration, _semanticModel);
+                            discoveredAction(this, variableDeclaration, SemanticModel);
                         }
                     }
                 }
@@ -208,7 +186,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverClassInformation()
         {
-            _isMarkedWithThreadSafeAttribute = _classSymbol.HasCustomAttribute<ThreadSafeAttribute>();
+            _isMarkedWithThreadSafeAttribute = Symbol.HasCustomAttribute<ThreadSafeAttribute>();
             _isPartialClass = false; //TODO: Find this out.
         }
 
@@ -216,9 +194,5 @@ namespace ThreadSafetyAnnotations.Engine
         public bool IsPartialClass { get { return _isPartialClass; } }
         public List<LockInfo> Locks { get { return _locks; } }
         public List<GuardedMemberInfo> GuardedMembers { get { return _guardedMembers; } }
-
-        public CommonSyntaxNode Declaration { get { return _classDeclaration; } }
-        public ISymbol Symbol { get { return _classSymbol; } }
-        
     }
 }

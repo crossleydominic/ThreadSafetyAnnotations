@@ -5,15 +5,15 @@ using System.Text;
 
 namespace ThreadSafetyAnnotations.Engine.Rules
 {
-    internal abstract class AnalysisRule<T>
+    internal abstract class AnalysisRule<T> where T : IBaseInfo
     {
         protected abstract string RuleViolationMessage { get; }
         protected abstract ErrorCode RuleViolationCode { get; }
-        
+
         public List<Issue> Analyze(T target)
         {
             List<Issue> issues = new List<Issue>();
-            
+
             if (!OnAnalyze(target))
             {
                 issues.Add(new Issue(

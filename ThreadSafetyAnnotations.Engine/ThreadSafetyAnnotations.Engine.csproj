@@ -54,7 +54,7 @@
     <Compile Include="Rules\AnalysisRule.cs" />
     <Compile Include="Rules\ClassRules\GuardedMemberInNonThreadSafeClassRule.cs" />
     <Compile Include="Rules\ClassRules\LockInNonThreadSafeClassRule.cs" />
-    <Compile Include="SourceCodeElementInfo.cs" />
+    <Compile Include="BaseInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Attributes\ThreadSafetyAnnotations.Attributes.csproj">
