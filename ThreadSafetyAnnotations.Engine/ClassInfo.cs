@@ -50,7 +50,7 @@ namespace ThreadSafetyAnnotations.Engine
         private void DiscoverClassInformation()
         {
             _isMarkedWithThreadSafeAttribute = Symbol.HasCustomAttribute<ThreadSafeAttribute>();
-            _isPartialClass = false; //TODO: Find this out.
+            _isPartialClass = false; 
         }
 
         public bool IsMarkedWithThreadSafeAttribute { get { return _isMarkedWithThreadSafeAttribute; } }

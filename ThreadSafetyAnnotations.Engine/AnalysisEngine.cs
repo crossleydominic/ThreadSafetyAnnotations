@@ -9,6 +9,7 @@ using Roslyn.Compilers;
 using ThreadSafetyAnnotations.Engine.Rules.ClassRules;
 using ThreadSafetyAnnotations.Engine.Rules;
 using System.Reflection;
+using ThreadSafetyAnnotations.Attributes;
 
 namespace ThreadSafetyAnnotations.Engine
 {
@@ -91,6 +92,14 @@ namespace ThreadSafetyAnnotations.Engine
 
             foreach (ClassDeclarationSyntax classDeclaration in _syntaxTree.Root.DescendentNodes().OfType<ClassDeclarationSyntax>())
             {
+                ISymbol sym = _semanticModel.GetDeclaredSymbol(classDeclaration);
+                Assembly assembly = Assembly.GetAssembly(typeof(ThreadSafeAttribute));
+                if (assembly.GetTypes().Any(t => t.Name == sym.Name))
+                {
+                    continue;
+                }
+                
+
                 classes.Add(new ClassInfo(classDeclaration, _semanticModel));
             }
 

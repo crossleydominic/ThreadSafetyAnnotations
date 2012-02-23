@@ -12,6 +12,29 @@ namespace ThreadSafetyAnnotations.Engine.Tests
     public class Tests
     {
         [Test]
+        public void ClassWithCorrectUsage()
+        {
+            List<Issue> issues = Analyze(@"    
+                [ThreadSafe]
+                public class ClassUnderTest
+                {
+                    [Lock]
+                    private object _lock1;
+
+                    [GuardedByAttribute(""_lock1"")]
+                    private int _data1;
+                }");
+
+            foreach (Issue i in issues)
+            {
+                Console.WriteLine(i.Description);
+            }
+
+            Assert.IsNotNull(issues);
+            Assert.AreEqual(0, issues.Count);
+        }
+
+        [Test]
         public void ClassWithPublicLock_CausesIssue()
         {
             List<Issue> issues = Analyze(@"    

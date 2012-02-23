@@ -10,7 +10,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
         protected override bool OnAnalyze(ClassInfo target)
         {
             return target.GuardedMembers.Count > 0 &&
-               target.IsMarkedWithThreadSafeAttribute == false;
+               target.IsMarkedWithThreadSafeAttribute == true;
         }
 
         protected override string RuleViolationMessage
