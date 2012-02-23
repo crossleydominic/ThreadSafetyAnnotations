@@ -52,12 +52,16 @@
     <Compile Include="LockInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\AnalysisRule.cs" />
-    <Compile Include="Rules\ClassRules\ClassRule.cs" />
     <Compile Include="Rules\ClassRules\GuardedMemberInNonThreadSafeClassRule.cs" />
     <Compile Include="Rules\ClassRules\GuardedMembersReferenceKnownLocksRule.cs" />
     <Compile Include="Rules\ClassRules\LockInNonThreadSafeClassRule.cs" />
     <Compile Include="BaseInfo.cs" />
     <Compile Include="Rules\ClassRules\LockProtectsGuardedMember.cs" />
+    <Compile Include="Rules\GuardedMemberRules\GuardedMemberMustBePrivateRule.cs" />
+    <Compile Include="Rules\GuardedMemberRules\GuardedMemberMustBeProtectedRule.cs" />
+    <Compile Include="Rules\IAnalysisRule.cs" />
+    <Compile Include="Rules\LockRules\LockMustBePrivateRule.cs" />
+    <Compile Include="Rules\LockRules\LockMustBeSystemObjectRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Attributes\ThreadSafetyAnnotations.Attributes.csproj">
@@ -66,8 +70,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Rules\GuardedMemberRules\" />
-    <Folder Include="Rules\LockRules\" />
     <Folder Include="Rules\MethodRules\" />
     <Folder Include="Rules\PropertyRules\" />
   </ItemGroup>

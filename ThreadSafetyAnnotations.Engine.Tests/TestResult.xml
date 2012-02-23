@@ -1,70 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\ThreadSafetyAnnotations.Engine.Tests.nunit" total="10" errors="0" failures="5" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-02-22" time="08:00:01">
+<test-results name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\ThreadSafetyAnnotations.Engine.Tests.nunit" total="10" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-02-23" time="07:49:04">
   <environment nunit-version="2.5.10.11092" clr-version="2.0.50727.4952" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\Dev\gitroot\Simple.Data\packages\NUnit.2.5.10.11092\tools" machine-name="SAGE010601" user="dominic.crossley" user-domain="SAGEUKIE" />
   <culture-info current-culture="en-GB" current-uiculture="en-US" />
-  <test-suite type="Project" name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\ThreadSafetyAnnotations.Engine.Tests.nunit" executed="True" result="Failure" success="False" time="2.020" asserts="0">
+  <test-suite type="Project" name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\ThreadSafetyAnnotations.Engine.Tests.nunit" executed="True" result="Success" success="True" time="0.072" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\bin\Debug\ThreadSafetyAnnotations.Engine.Tests.dll" executed="True" result="Failure" success="False" time="2.009" asserts="0">
+      <test-suite type="Assembly" name="C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\bin\Debug\ThreadSafetyAnnotations.Engine.Tests.dll" executed="True" result="Success" success="True" time="0.072" asserts="0">
         <results>
-          <test-suite type="Namespace" name="ThreadSafetyAnnotations" executed="True" result="Failure" success="False" time="2.008" asserts="0">
+          <test-suite type="Namespace" name="ThreadSafetyAnnotations" executed="True" result="Success" success="True" time="0.072" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Engine" executed="True" result="Failure" success="False" time="2.008" asserts="0">
+              <test-suite type="Namespace" name="Engine" executed="True" result="Success" success="True" time="0.071" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="2.007" asserts="0">
+                  <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.071" asserts="0">
                     <results>
-                      <test-suite type="TestFixture" name="Tests" executed="True" result="Failure" success="False" time="2.004" asserts="0">
+                      <test-suite type="TestFixture" name="Tests" executed="True" result="Success" success="True" time="0.071" asserts="0">
                         <results>
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithEmptyLockName_CausesIssue" executed="True" result="Success" success="True" time="1.799" asserts="3" />
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithLockProtectingNothing_CausesIssue" executed="True" result="Success" success="True" time="0.011" asserts="3" />
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithNonObjectLock_CausesIssue" executed="True" result="Failure" success="False" time="0.014" asserts="3">
-                            <failure>
-                              <message><![CDATA[  Expected: True
-  But was:  False
-]]></message>
-                              <stack-trace><![CDATA[at ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithNonObjectLock_CausesIssue() in C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Tests.cs:line 77
-]]></stack-trace>
-                            </failure>
-                          </test-case>
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedDataMember_CausesIssue" executed="True" result="Failure" success="False" time="0.022" asserts="3">
-                            <failure>
-                              <message><![CDATA[  Expected: True
-  But was:  False
-]]></message>
-                              <stack-trace><![CDATA[at ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedDataMember_CausesIssue() in C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Tests.cs:line 140
-]]></stack-trace>
-                            </failure>
-                          </test-case>
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedLock_CausesIssue" executed="True" result="Failure" success="False" time="0.005" asserts="3">
-                            <failure>
-                              <message><![CDATA[  Expected: True
-  But was:  False
-]]></message>
-                              <stack-trace><![CDATA[at ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedLock_CausesIssue() in C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Tests.cs:line 59
-]]></stack-trace>
-                            </failure>
-                          </test-case>
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicDataMember_CausesIssue" executed="True" result="Failure" success="False" time="0.002" asserts="3">
-                            <failure>
-                              <message><![CDATA[  Expected: True
-  But was:  False
-]]></message>
-                              <stack-trace><![CDATA[at ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicDataMember_CausesIssue() in C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Tests.cs:line 123
-]]></stack-trace>
-                            </failure>
-                          </test-case>
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicLock_CausesIssue" executed="True" result="Failure" success="False" time="0.002" asserts="3">
-                            <failure>
-                              <message><![CDATA[  Expected: True
-  But was:  False
-]]></message>
-                              <stack-trace><![CDATA[at ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicLock_CausesIssue() in C:\Dev\gitroot\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Tests.cs:line 27
-]]></stack-trace>
-                            </failure>
-                          </test-case>
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithEmptyLockName_CausesIssue" executed="True" result="Success" success="True" time="0.027" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithLockProtectingNothing_CausesIssue" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithNonObjectLock_CausesIssue" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedDataMember_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithProtectedLock_CausesIssue" executed="True" result="Success" success="True" time="0.005" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicDataMember_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithPublicLock_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
                           <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.ClassWithUnknownLockName_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
                           <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.GuardedMemberInNonThreadSafeClass_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
-                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.LockInNonThreadSafeClass_CausesIssue" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                          <test-case name="ThreadSafetyAnnotations.Engine.Tests.Tests.LockInNonThreadSafeClass_CausesIssue" executed="True" result="Success" success="True" time="0.002" asserts="3" />
                         </results>
                       </test-suite>
                     </results>

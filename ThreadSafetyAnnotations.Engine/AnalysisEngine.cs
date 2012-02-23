@@ -7,16 +7,29 @@ using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 using Roslyn.Compilers;
 using ThreadSafetyAnnotations.Engine.Rules.ClassRules;
+using ThreadSafetyAnnotations.Engine.Rules;
+using System.Reflection;
 
 namespace ThreadSafetyAnnotations.Engine
 {
     public class AnalysisEngine
     {
-        //private IDocument _document;
         private CommonSyntaxTree _syntaxTree;
         private ISemanticModel _semanticModel;
 
-        private List<ClassRule> _classRules;
+        private static readonly List<IAnalysisRule> _analysisRules;
+
+        static AnalysisEngine()
+        {
+            _analysisRules = new List<IAnalysisRule>();
+            TypeFilter typeFilter = new TypeFilter((t, o) => t == typeof(IAnalysisRule));
+            foreach (Type type in Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => t.FindInterfaces(typeFilter, null).Any() && t.IsAbstract == false))
+            {
+                _analysisRules.Add((IAnalysisRule)Activator.CreateInstance(type));
+            }
+        }
 
         public AnalysisEngine(CommonSyntaxTree syntaxTree, ISemanticModel semanticModel)
         {
@@ -36,14 +49,6 @@ namespace ThreadSafetyAnnotations.Engine
 
             _syntaxTree = syntaxTree;
             _semanticModel = semanticModel;
-
-            _classRules = new List<ClassRule>()
-            {
-                new GuardedMemberInNonThreadSafeClassRule(),
-                new LockInNonThreadSafeClassRule(),
-                new GuardedMembersReferenceKnownLocksRule(),
-                new LockProtectsGuardedMember()
-            };
         }
 
         public List<Issue> Analzye()
@@ -51,16 +56,28 @@ namespace ThreadSafetyAnnotations.Engine
             List<Issue> issues = new List<Issue>();
 
             List<ClassInfo> classInfos = DiscoverInformation();
-            /*foreach (ClassInfo classInfo in classInfos)
-            {
-                issues.AddRange(classInfo.Analyze());
-            }*/
 
             foreach (ClassInfo classInfo in classInfos)
             {
-                foreach (ClassRule rule in _classRules)
+                foreach (IAnalysisRule rule in _analysisRules.Where(r=>r.TargetType == typeof(ClassInfo)))
                 {
                     issues.AddRange(rule.Analyze(classInfo));
+                }
+
+                foreach (LockInfo lockInfo in classInfo.Locks)
+                {
+                    foreach (IAnalysisRule rule in _analysisRules.Where(r => r.TargetType == typeof(LockInfo)))
+                    {
+                        issues.AddRange(rule.Analyze(lockInfo));
+                    }
+                }
+
+                foreach (GuardedMemberInfo memberInfo in classInfo.GuardedMembers)
+                {
+                    foreach (IAnalysisRule rule in _analysisRules.Where(r => r.TargetType == typeof(GuardedMemberInfo)))
+                    {
+                        issues.AddRange(rule.Analyze(memberInfo));
+                    }
                 }
             }
 

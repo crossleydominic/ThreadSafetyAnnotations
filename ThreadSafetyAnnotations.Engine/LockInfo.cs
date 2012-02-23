@@ -39,33 +39,6 @@ namespace ThreadSafetyAnnotations.Engine
             DiscoverLockInformation();
         }
 
-        /*public List<Issue> Analyze()
-        {
-            DiscoverLockInformation();
-
-            List<Issue> issues = new List<Issue>();
-
-            if (!_isPrivate)
-            {
-                issues.Add(new Issue(
-                    string.Format("Declared lock '{0}' must be declared private", _lockName),
-                    ErrorCode.LOCK_IS_NOT_PRIVATE,
-                    Declaration,
-                    Symbol));
-            }
-
-            if (!_isSystemObjectType)
-            {
-                issues.Add(new Issue(
-                    string.Format("Declared lock '{0}' must be of type System.Object", _lockName),
-                    ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT,
-                    Declaration,
-                    Symbol));
-            }
-
-            return issues;
-        }*/
-
         private void DiscoverLockInformation()
         {
             _isPrivate = Symbol.DeclaredAccessibility == Accessibility.Private;
@@ -74,5 +47,7 @@ namespace ThreadSafetyAnnotations.Engine
         }
 
         public string LockName { get { return _lockName; } }
+        public bool IsPrivate { get { return _isPrivate; } }
+        public bool IsSystemObject { get { return _isSystemObjectType; } }
     }
 }
