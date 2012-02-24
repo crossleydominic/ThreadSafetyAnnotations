@@ -15,7 +15,9 @@ namespace ThreadSafetyAnnotations.Engine
         private List<MethodInfo> _methods;
         private List<PropertyInfo> _properties;
         private bool _isMarkedWithThreadSafeAttribute;
-        private bool _isPartialClass;
+        private bool _isPartial;
+        private bool _isStatic;
+        private bool _isAbstract;
 
         public ClassInfo(ClassDeclarationSyntax classDeclaration, ISemanticModel semanticModel)
             : base(classDeclaration, semanticModel)
@@ -75,11 +77,15 @@ namespace ThreadSafetyAnnotations.Engine
         private void DiscoverClassInformation()
         {
             _isMarkedWithThreadSafeAttribute = Symbol.HasCustomAttribute<ThreadSafeAttribute>();
-            _isPartialClass = Declaration.Modifiers.Any(SyntaxKind.PartialKeyword); 
+            _isPartial = Declaration.Modifiers.Any(SyntaxKind.PartialKeyword);
+            _isStatic = Declaration.Modifiers.Any(SyntaxKind.StaticKeyword);
+            _isAbstract = Declaration.Modifiers.Any(SyntaxKind.AbstractKeyword);
         }
 
         public bool IsMarkedWithThreadSafeAttribute { get { return _isMarkedWithThreadSafeAttribute; } }
-        public bool IsPartialClass { get { return _isPartialClass; } }
+        public bool IsPartial { get { return _isPartial; } }
+        public bool IsStatic { get { return _isStatic; } }
+        public bool IsAbstract { get { return _isAbstract; } }
         public List<LockInfo> Locks { get { return _locks; } }
         public List<GuardedMemberInfo> GuardedMembers { get { return _guardedMembers; } }
     }

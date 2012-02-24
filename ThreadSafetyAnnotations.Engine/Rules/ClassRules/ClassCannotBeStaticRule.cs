@@ -5,21 +5,21 @@ using System.Text;
 
 namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
-    internal class ClassCannotBePartialRule : AnalysisRule<ClassInfo>
+    internal class ClassCannotBeStaticRule : AnalysisRule<ClassInfo>
     {
         protected override string RuleViolationMessage
         {
-            get { return "Classes marked with the ThreadSafe attribute cannot be partial."; }
+            get { return "Classes marked with the ThreadSafe attribute cannot be static."; }
         }
 
         protected override ErrorCode RuleViolationCode
         {
-            get { return ErrorCode.CLASS_CANNOT_BE_PARTIAL; }
+            get { return ErrorCode.CLASS_CANNOT_BE_STATIC; }
         }
 
         protected override AnalysisResult OnAnalyze(ClassInfo target)
         {
-            return target.IsPartial ? AnalysisResult.Failed : AnalysisResult.Succeeded;
+            return target.IsStatic ? AnalysisResult.Failed : AnalysisResult.Succeeded;
         }
     }
 }

@@ -55,7 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyInfo.cs" />
     <Compile Include="Rules\AnalysisRule.cs" />
+    <Compile Include="Rules\ClassRules\ClassCannotBeAbstractRule.cs" />
     <Compile Include="Rules\ClassRules\ClassCannotBePartialRule.cs" />
+    <Compile Include="Rules\ClassRules\ClassCannotBeStaticRule.cs" />
     <Compile Include="Rules\ClassRules\GuardedMemberInNonThreadSafeClassRule.cs" />
     <Compile Include="Rules\ClassRules\GuardedMembersReferenceKnownLocksRule.cs" />
     <Compile Include="Rules\ClassRules\LockInNonThreadSafeClassRule.cs" />

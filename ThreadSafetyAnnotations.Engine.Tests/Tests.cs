@@ -30,6 +30,44 @@ namespace ThreadSafetyAnnotations.Engine.Tests
         }
 
         [Test]
+        public void AbstractClass_CausesIssue()
+        {
+            List<Issue> issues = Analyze(@"    
+                [ThreadSafe]
+                public abstract class ClassUnderTest
+                {
+                    [Lock]
+                    private object _lock1;
+
+                    [GuardedByAttribute(""_lock1"")]
+                    private int _data1;
+                }");
+
+            Assert.IsNotNull(issues);
+            Assert.GreaterOrEqual(issues.Count, 1);
+            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_ABSTRACT));
+        }
+
+        [Test]
+        public void StaticClass_CausesIssue()
+        {
+            List<Issue> issues = Analyze(@"    
+                [ThreadSafe]
+                public static class ClassUnderTest
+                {
+                    [Lock]
+                    private static object _lock1;
+
+                    [GuardedByAttribute(""_lock1"")]
+                    private static int _data1;
+                }");
+
+            Assert.IsNotNull(issues);
+            Assert.GreaterOrEqual(issues.Count, 1);
+            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_STATIC));
+        }
+
+        [Test]
         public void PartialClass_CausesIssue()
         {
             List<Issue> issues = Analyze(@"    
