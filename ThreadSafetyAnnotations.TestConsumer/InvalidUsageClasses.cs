@@ -7,6 +7,16 @@ using ThreadSafetyAnnotations.Attributes;
 namespace ThreadSafetyAnnotations.TestConsumer
 {
     [ThreadSafe]
+    public partial class WithPartial
+    {
+        [Lock]
+        private object _lock1;
+
+        [GuardedBy("_lock1")]
+        private int _data1;
+    }
+
+    [ThreadSafe]
     public class WithPublicLock
     {
         //Lock is public, invalid

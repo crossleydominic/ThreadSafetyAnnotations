@@ -25,13 +25,27 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                     public double SomeProperty{get{return _someData1;}}
                 }");
 
-            foreach (Issue i in issues)
-            {
-                Console.WriteLine(i.Description);
-            }
-
             Assert.IsNotNull(issues);
             Assert.AreEqual(0, issues.Count);
+        }
+
+        [Test]
+        public void PartialClass_CausesIssue()
+        {
+            List<Issue> issues = Analyze(@"    
+                [ThreadSafe]
+                public partial class ClassUnderTest
+                {
+                    [Lock]
+                    private object _lock1;
+
+                    [GuardedByAttribute(""_lock1"")]
+                    private int _data1;
+                }");
+
+            Assert.IsNotNull(issues);
+            Assert.GreaterOrEqual(issues.Count, 1);
+            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_PARTIAL));
         }
 
         [Test]
@@ -47,11 +61,6 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                     [GuardedByAttribute(""_lock1"")]
                     private int _data1;
                 }");
-
-            foreach (Issue i in issues)
-            {
-                Console.WriteLine(i.Description);
-            }
 
             Assert.IsNotNull(issues);
             Assert.AreEqual(0, issues.Count);

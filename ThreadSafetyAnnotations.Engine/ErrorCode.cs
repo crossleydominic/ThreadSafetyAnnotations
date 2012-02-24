@@ -14,6 +14,7 @@ namespace ThreadSafetyAnnotations.Engine
         LOCK_IS_NOT_PRIVATE,
         LOCK_MUST_BE_SYSTEM_OBJECT,
         GUARDED_MEMBER_IN_A_NON_THREAD_SAFE_CLASS,
-        LOCK_IN_A_NON_THREAD_SAFE_CLASS
+        LOCK_IN_A_NON_THREAD_SAFE_CLASS,
+        CLASS_CANNOT_BE_PARTIAL
     }
 }
