@@ -22,7 +22,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules
         {
             List<Issue> issues = new List<Issue>();
 
-            if (!OnAnalyze((T)target))
+            AnalysisResult result = OnAnalyze((T)target);
+
+            if (result == AnalysisResult.Failed)
             {
                 issues.Add(new Issue(
                     RuleViolationMessage,
@@ -30,11 +32,15 @@ namespace ThreadSafetyAnnotations.Engine.Rules
                     target.Declaration,
                     target.Symbol));
             }
+            else if (result == AnalysisResult.Inconclusive)
+            {
+                throw new NotImplementedException();
+            }
 
             return issues;
         }
 
-        protected abstract bool OnAnalyze(T target);
+        protected abstract AnalysisResult OnAnalyze(T target);
 
         public Type TargetType
         {

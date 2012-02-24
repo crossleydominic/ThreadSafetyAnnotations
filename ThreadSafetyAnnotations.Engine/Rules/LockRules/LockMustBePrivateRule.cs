@@ -17,9 +17,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
             get { return ErrorCode.LOCK_IS_NOT_PRIVATE; }
         }
 
-        protected override bool OnAnalyze(LockInfo target)
+        protected override AnalysisResult OnAnalyze(LockInfo target)
         {
-            return target.IsPrivate;
+            return target.IsPrivate ? AnalysisResult.Succeeded : AnalysisResult.Failed;
         }
     }
 }

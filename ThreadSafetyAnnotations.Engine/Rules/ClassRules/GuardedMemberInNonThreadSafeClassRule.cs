@@ -7,10 +7,16 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
     internal class GuardedMemberInNonThreadSafeClassRule : AnalysisRule<ClassInfo>
     {
-        protected override bool OnAnalyze(ClassInfo target)
+        protected override AnalysisResult OnAnalyze(ClassInfo target)
         {
-            return target.GuardedMembers.Count > 0 &&
-               target.IsMarkedWithThreadSafeAttribute == true;
+            if (target.GuardedMembers.Count == 0)
+            {
+                return AnalysisResult.Succeeded;
+            }
+            else
+            {
+                return (target.IsMarkedWithThreadSafeAttribute ? AnalysisResult.Succeeded : AnalysisResult.Failed);
+            }
         }
 
         protected override string RuleViolationMessage

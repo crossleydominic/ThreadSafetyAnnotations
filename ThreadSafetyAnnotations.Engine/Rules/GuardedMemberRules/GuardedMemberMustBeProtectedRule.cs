@@ -17,9 +17,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedMemberRules
             get { return ErrorCode.GUARDED_MEMBER_NOT_ASSOCIATED_WITH_A_LOCK; }
         }
 
-        protected override bool OnAnalyze(GuardedMemberInfo target)
+        protected override AnalysisResult OnAnalyze(GuardedMemberInfo target)
         {
-            return target.ProtectingLockNames.Count > 0;
+            return target.ProtectingLockNames.Count > 0 ? AnalysisResult.Succeeded : AnalysisResult.Failed;
         }
     }
 }

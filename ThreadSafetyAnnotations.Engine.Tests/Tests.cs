@@ -12,6 +12,29 @@ namespace ThreadSafetyAnnotations.Engine.Tests
     public class Tests
     {
         [Test]
+        public void ClassNotUsingThreadSafety()
+        {
+            List<Issue> issues = Analyze(@"    
+                public class ClassUnderTest
+                {
+                    public object _someObj;
+
+                    public double _someData1;
+
+                    public void SomeMethod1(){}
+                    public double SomeProperty{get{return _someData1;}}
+                }");
+
+            foreach (Issue i in issues)
+            {
+                Console.WriteLine(i.Description);
+            }
+
+            Assert.IsNotNull(issues);
+            Assert.AreEqual(0, issues.Count);
+        }
+
+        [Test]
         public void ClassWithCorrectUsage()
         {
             List<Issue> issues = Analyze(@"    

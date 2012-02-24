@@ -7,7 +7,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
     internal class GuardedMembersReferenceKnownLocksRule : AnalysisRule<ClassInfo>
     {
-        protected override bool OnAnalyze(ClassInfo target)
+        protected override AnalysisResult OnAnalyze(ClassInfo target)
         {            
             //Check that all guards reference a named lock.
             foreach (GuardedMemberInfo guardedMember in target.GuardedMembers)
@@ -16,12 +16,12 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
                 {
                     if (!target.Locks.Any(l => l.LockName == protectingLockname))
                     {
-                        return false;
+                        return AnalysisResult.Failed;
                     }
                 }
             }
 
-            return true;
+            return AnalysisResult.Succeeded;
         }
 
         protected override string RuleViolationMessage

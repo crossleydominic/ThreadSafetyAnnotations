@@ -17,9 +17,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedMemberRules
             get { return ErrorCode.GUARDED_MEMBER_IS_NOT_PRIVATE; }
         }
 
-        protected override bool OnAnalyze(GuardedMemberInfo target)
+        protected override AnalysisResult OnAnalyze(GuardedMemberInfo target)
         {
-            return target.IsPrivate;
+            return target.IsPrivate ? AnalysisResult.Succeeded : AnalysisResult.Failed;
         }
     }
 }

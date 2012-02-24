@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalysisEngine.cs" />
+    <Compile Include="AnalysisResult.cs" />
     <Compile Include="ClassInfo.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="GuardedMemberInfo.cs" />

@@ -17,9 +17,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
             get { return ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT; }
         }
 
-        protected override bool OnAnalyze(LockInfo target)
+        protected override AnalysisResult OnAnalyze(LockInfo target)
         {
-            return target.IsSystemObject;
+            return target.IsSystemObject ? AnalysisResult.Succeeded : AnalysisResult.Failed;
         }
     }
 }
