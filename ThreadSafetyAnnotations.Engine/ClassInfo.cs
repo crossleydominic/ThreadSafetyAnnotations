@@ -37,7 +37,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverMethods()
         {
-            foreach (MethodDeclarationSyntax methodDeclaration in Declaration.DescendentNodes().OfType<MethodDeclarationSyntax>())
+            foreach (MethodDeclarationSyntax methodDeclaration in Declaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
             {
                 ISymbol methodSymbol = SemanticModel.GetDeclaredSymbol(methodDeclaration);
 
@@ -47,7 +47,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverProperties()
         {
-            foreach (PropertyDeclarationSyntax propertyDeclaration in Declaration.DescendentNodes().OfType<PropertyDeclarationSyntax>())
+            foreach (PropertyDeclarationSyntax propertyDeclaration in Declaration.DescendantNodes().OfType<PropertyDeclarationSyntax>())
             {
                 ISymbol propertySymbol = SemanticModel.GetDeclaredSymbol(propertyDeclaration);
 
@@ -57,7 +57,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverMembers<TAttribute>(Action<ClassInfo, VariableDeclaratorSyntax, ISemanticModel> discoveredAction)
         {
-            foreach (MemberDeclarationSyntax memberDeclaration in Declaration.DescendentNodes().OfType<MemberDeclarationSyntax>())
+            foreach (MemberDeclarationSyntax memberDeclaration in Declaration.DescendantNodes().OfType<MemberDeclarationSyntax>())
             {
                 ISymbol memberSymbol = SemanticModel.GetDeclaredSymbol(memberDeclaration);
 

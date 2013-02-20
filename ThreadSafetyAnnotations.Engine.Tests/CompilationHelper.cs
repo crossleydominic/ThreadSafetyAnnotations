@@ -46,10 +46,10 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
 
         public static Compilation Create(string testClassString)
         {
-            SyntaxTree tree = SyntaxTree.ParseCompilationUnit(GetProgramText(testClassString));
+            SyntaxTree tree = SyntaxTree.ParseText(GetProgramText(testClassString));
 
             return Compilation.Create("TestCompilation")
-                                .AddReferences(new AssemblyFileReference(typeof(object).Assembly.Location))                                
+                                //.AddReferences(new AssemblyIdentity(typeof(object).Assembly.Location))                                
                                 .AddSyntaxTrees(tree);
         }
 

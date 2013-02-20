@@ -90,7 +90,7 @@ namespace ThreadSafetyAnnotations.Engine
         {
             List<ClassInfo> classes = new List<ClassInfo>();
 
-            foreach (ClassDeclarationSyntax classDeclaration in _syntaxTree.Root.DescendentNodes().OfType<ClassDeclarationSyntax>())
+            foreach (ClassDeclarationSyntax classDeclaration in _syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>())
             {
                 ISymbol sym = _semanticModel.GetDeclaredSymbol(classDeclaration);
                 Assembly assembly = Assembly.GetAssembly(typeof(ThreadSafeAttribute));

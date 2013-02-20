@@ -15,7 +15,7 @@ namespace ThreadSafetyAnnotations.Engine
         private string _sourceLineText;
         private int _sourceLineNumber;
         private string _sourceFileName;
-        private ILocation _location;
+        private CommonLocation _location;
 
         public Issue(
             string description, 
@@ -60,7 +60,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private string GetSourceLineText(int lineNumber)
         {
-            return _location.SourceTree.Text.GetLineFromLineNumber(lineNumber).GetText().Trim();
+            return _location.SourceTree.GetText().GetLineFromLineNumber(lineNumber).Extent.ToString().Trim();
         }
 
         private int GetSourceLineNumber()
@@ -70,7 +70,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private string GetSourceFileName()
         {
-            return _location.SourceTree.FileName;
+            return _location.SourceTree.FilePath;
         }
 
         public string Description { get { return _description; } }

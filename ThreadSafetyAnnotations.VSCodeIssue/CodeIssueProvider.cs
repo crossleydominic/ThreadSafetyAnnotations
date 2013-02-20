@@ -12,17 +12,9 @@ using ThreadSafetyAnnotations.Engine;
 
 namespace ThreadSafetyAnnotations.VSCodeIssue
 {
-    [ExportSyntaxNodeCodeIssueProvider("ThreadSafetyAnnotations.VSCodeIssue", LanguageNames.CSharp)]
+    [ExportCodeIssueProvider("ThreadSafetyAnnotations.VSCodeIssue", LanguageNames.CSharp)]
     class CodeIssueProvider : ICodeIssueProvider
     {
-        private readonly ICodeActionEditFactory editFactory;
-
-        [ImportingConstructor]
-        public CodeIssueProvider(ICodeActionEditFactory editFactory)
-        {
-            this.editFactory = editFactory;
-        }
-
         public IEnumerable<CodeIssue> GetIssues(IDocument document, CommonSyntaxNode node, CancellationToken cancellationToken)
         {
             //AnalysisEngine engine = new AnalysisEngine(document);
@@ -31,7 +23,15 @@ namespace ThreadSafetyAnnotations.VSCodeIssue
                             document.GetSemanticModel());
             foreach (Issue i in engine.Analzye())
             {
-                yield return new CodeIssue(CodeIssue.Severity.Warning, i.SyntaxNode.Span, i.Description);
+                yield return new CodeIssue(CodeIssueKind.Warning, i.SyntaxNode.Span, i.Description);
+            }
+        }
+
+        public IEnumerable<Type> SyntaxNodeTypes
+        {
+            get
+            {
+                yield return typeof(SyntaxNode);
             }
         }
 
@@ -42,9 +42,12 @@ namespace ThreadSafetyAnnotations.VSCodeIssue
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CodeIssue> GetIssues(IDocument document, CommonSyntaxTrivia trivia, CancellationToken cancellationToken)
+        public IEnumerable<int> SyntaxTokenKinds
         {
-            throw new NotImplementedException();
+            get
+            {
+                return null;
+            }
         }
 
         #endregion

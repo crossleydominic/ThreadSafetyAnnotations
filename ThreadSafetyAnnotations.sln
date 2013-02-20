@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafetyAnnotations.Attributes", "ThreadSafetyAnnotations.Attributes\ThreadSafetyAnnotations.Attributes.csproj", "{57DD9D4F-9E42-4828-92AB-52ECD9D2EE74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafetyAnnotations.Engine", "ThreadSafetyAnnotations.Engine\ThreadSafetyAnnotations.Engine.csproj", "{BA0F69C5-76CB-4A02-BB83-559EEA88D844}"
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafetyAnnotations.TestConsumer", "ThreadSafetyAnnotations.TestConsumer\ThreadSafetyAnnotations.TestConsumer.csproj", "{F7E73A2A-5570-4691-B9C8-86EB5BFE3AA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafetyAnnotations.Engine.Tests", "ThreadSafetyAnnotations.Engine.Tests\ThreadSafetyAnnotations.Engine.Tests.csproj", "{D590B067-C05E-4597-859D-F55D7598BB32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeIssue1", "CodeIssue1\CodeIssue1.csproj", "{FA2F27B1-72FD-457D-97D1-DF19BA228D19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,16 @@ Global
 		{D590B067-C05E-4597-859D-F55D7598BB32}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D590B067-C05E-4597-859D-F55D7598BB32}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D590B067-C05E-4597-859D-F55D7598BB32}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FA2F27B1-72FD-457D-97D1-DF19BA228D19}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

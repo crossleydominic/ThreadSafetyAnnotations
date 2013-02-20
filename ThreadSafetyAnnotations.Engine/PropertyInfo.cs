@@ -36,7 +36,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private void DiscoverInformation()
         {
-            IEnumerable<AccessorDeclarationSyntax> accessors = Declaration.DescendentNodes().OfType<AccessorDeclarationSyntax>();
+            IEnumerable<AccessorDeclarationSyntax> accessors = Declaration.DescendantNodes().OfType<AccessorDeclarationSyntax>();
 
             _getAccessor = accessors.Where(a => a.Kind == SyntaxKind.GetAccessorDeclaration).FirstOrDefault();
             _setAccessor = accessors.Where(a => a.Kind == SyntaxKind.SetAccessorDeclaration).FirstOrDefault();

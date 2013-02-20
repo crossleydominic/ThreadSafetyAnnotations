@@ -42,7 +42,7 @@ namespace ThreadSafetyAnnotations.Engine
         private void DiscoverInformation()
         {
             _isPrivate = Symbol.DeclaredAccessibility == Accessibility.Private;
-            _guardedMemberName = Declaration.Identifier.GetText();
+            _guardedMemberName = Declaration.Identifier.ValueText;
             _protectingLockNames = Symbol.GetGuardedByLockNames();
         }
 

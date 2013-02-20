@@ -42,7 +42,7 @@ namespace ThreadSafetyAnnotations.Engine
         private void DiscoverLockInformation()
         {
             _isPrivate = Symbol.DeclaredAccessibility == Accessibility.Private;
-            _lockName = Declaration.Identifier.GetText();
+            _lockName = Declaration.Identifier.ValueText;
             _isSystemObjectType = Symbol.Type.SpecialType == Roslyn.Compilers.SpecialType.System_Object;
         }
 
