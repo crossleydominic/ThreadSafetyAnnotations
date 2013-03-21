@@ -6,13 +6,13 @@ using Roslyn.Compilers.Common;
 
 namespace ThreadSafetyAnnotations.Engine
 {
-    internal interface IBaseInfo
+    public interface IBaseInfo
     {
         CommonSyntaxNode Declaration { get; }
         ISymbol Symbol { get; }
     }
 
-    internal class BaseInfo<TDecl, TSymbol> : IBaseInfo
+    public class BaseInfo<TDecl, TSymbol> : IBaseInfo
         where TDecl : CommonSyntaxNode
         where TSymbol : ISymbol
     {

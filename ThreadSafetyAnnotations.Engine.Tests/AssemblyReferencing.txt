@@ -1,0 +1,5 @@
+﻿The reference to ThreadSafetyAnnotations.Attributes must be a reference to a copy of the DLL that is used by
+the engine. That is, it cannot be a reference to project (otherwise the compilation fails 
+becuase the refeneced ThreadSafetyAnnotations.Attributes.DLL is already in use).
+The ThreadSafetyAnnotations.Attributes assembly is referenced from the Libs folder.  There is a post build
+task to copy the solutions ThreadSafetyAnnotations.Attributes assembly into this libs folder for convenience.

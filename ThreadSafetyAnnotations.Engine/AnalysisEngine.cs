@@ -16,7 +16,7 @@ namespace ThreadSafetyAnnotations.Engine
     public class AnalysisEngine
     {
         private CommonSyntaxTree _syntaxTree;
-        private ISemanticModel _semanticModel;
+        private SemanticModel _semanticModel;
 
         private static readonly List<IAnalysisRule> _analysisRules;
 
@@ -32,7 +32,7 @@ namespace ThreadSafetyAnnotations.Engine
             }
         }
 
-        public AnalysisEngine(CommonSyntaxTree syntaxTree, ISemanticModel semanticModel)
+        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
         {
             #region Input validation
 
@@ -54,6 +54,9 @@ namespace ThreadSafetyAnnotations.Engine
 
         public List<Issue> Analzye()
         {
+            AnalysisEngineEx ex = new AnalysisEngineEx(_syntaxTree, _semanticModel);
+            ex.Analyze();
+
             List<Issue> issues = new List<Issue>();
 
             List<ClassInfo> classInfos = DiscoverInformation();

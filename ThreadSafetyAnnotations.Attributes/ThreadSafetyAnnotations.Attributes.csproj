@@ -49,6 +49,13 @@
     <Compile Include="ThreadSafeAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del /F /Q $(SolutionDir)ThreadSafetyAnnotations.Engine.Tests\Libs\ThreadSafetyAnnotations.Attributes.dll
+xcopy $(TargetPath) $(SolutionDir)ThreadSafetyAnnotations.Engine.Tests\Libs\
+
+del /F /Q $(SolutionDir)ThreadSafetyAnnotations.TestConsumer\Libs\ThreadSafetyAnnotations.Attributes.dll
+xcopy $(TargetPath) $(SolutionDir)ThreadSafetyAnnotations.TestConsumer\Libs\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

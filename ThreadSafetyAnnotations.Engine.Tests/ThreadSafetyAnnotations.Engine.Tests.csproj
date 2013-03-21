@@ -56,6 +56,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThreadSafetyAnnotations.Attributes">
+      <HintPath>Libs\ThreadSafetyAnnotations.Attributes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompilationHelper.cs" />
@@ -63,10 +66,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThreadSafetyAnnotations.Attributes\ThreadSafetyAnnotations.Attributes.csproj">
-      <Project>{57DD9D4F-9E42-4828-92AB-52ECD9D2EE74}</Project>
-      <Name>ThreadSafetyAnnotations.Attributes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Engine\ThreadSafetyAnnotations.Engine.csproj">
       <Project>{BA0F69C5-76CB-4A02-BB83-559EEA88D844}</Project>
       <Name>ThreadSafetyAnnotations.Engine</Name>
@@ -74,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ThreadSafetyAnnotations.Engine.Tests.nunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AssemblyReferencing.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

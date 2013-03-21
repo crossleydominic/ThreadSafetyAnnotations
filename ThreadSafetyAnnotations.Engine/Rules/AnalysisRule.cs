@@ -46,5 +46,16 @@ namespace ThreadSafetyAnnotations.Engine.Rules
         {
             get { return _targetType; }
         }
+
+
+        public Type TargetTypeEx
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public List<Issue> AnalyzeEx(Roslyn.Compilers.CSharp.SyntaxNode node, Roslyn.Compilers.Common.CommonSyntaxTree tree, Roslyn.Compilers.CSharp.SemanticModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
