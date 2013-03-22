@@ -62,7 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompilationHelper.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="ClassRuleTests.cs" />
+    <Compile Include="GuardedFieldRuleTests.cs" />
+    <Compile Include="LockRuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

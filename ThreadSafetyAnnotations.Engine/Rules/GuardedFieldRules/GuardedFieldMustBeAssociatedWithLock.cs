@@ -5,9 +5,9 @@ using System.Text;
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 
-namespace ThreadSafetyAnnotations.Engine.Rules.GuardedMemberRules
+namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
-    internal class GuardedMemberMustBeAssociatedWithLock : IAnalysisRule
+    internal class GuardedFieldMustBeAssociatedWithLock : IAnalysisRule
     {
         public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {

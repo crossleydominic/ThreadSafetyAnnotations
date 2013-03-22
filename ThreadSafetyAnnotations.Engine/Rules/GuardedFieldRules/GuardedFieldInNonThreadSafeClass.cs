@@ -1,9 +1,9 @@
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 
-namespace ThreadSafetyAnnotations.Engine.Rules.GuardedMemberRules
+namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
-    internal class GuardedMemberInNonThreadSafeClass : IAnalysisRule
+    internal class GuardedFieldInNonThreadSafeClass : IAnalysisRule
     {
         public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {

@@ -24,20 +24,29 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
     @"
 }";
 
-        public static Compilation Create(string testClassString)
+        private static Compilation Create(string testClassString)
         {
             SyntaxTree tree = SyntaxTree.ParseText(GetProgramText(testClassString));
 
             return Compilation.Create("TestCompilation")
                 .AddReferences(new MetadataReference[]
                 {
+                    MetadataFileReference.CreateAssemblyReference("mscorlib"),
                     new MetadataFileReference(@"C:\Dev\MySolutions\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Libs\ThreadSafetyAnnotations.Attributes.dll"), 
-                    new MetadataFileReference(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll"), 
                 })
-                                //.AddReferences(new AssemblyIdentity(typeof(object).Assembly.Location))                                
-                                .AddSyntaxTrees(tree);
+                .AddSyntaxTrees(tree);
         }
+        
+        public static List<Issue> Analyze(string testClassString)
+        {
+            Compilation compilation = CompilationHelper.Create(testClassString);
 
+            AnalysisEngine engine = new AnalysisEngine(
+                compilation.SyntaxTrees[0],
+                compilation.GetSemanticModel(compilation.SyntaxTrees[0]));
+
+            return engine.Analyze();
+        }
 
         private static string GetProgramText(string testClassString)
         {
@@ -45,24 +54,3 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
         }
     }
 }
-/*
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class GuardedByAttribute : Attribute
-    {
-        private string[] _lockNames;
-        public GuardedByAttribute(params string[] lockNames)
-        {
-            _lockNames = lockNames;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class LockAttribute : Attribute
-    {
-    }
-
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ThreadSafeAttribute : Attribute
-    {
-    }*/

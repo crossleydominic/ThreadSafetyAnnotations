@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 
-namespace ThreadSafetyAnnotations.Engine.Rules.GuardedMemberRules
+namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
-    internal class GuardedMembersReferenceUnknownLock : IAnalysisRule
+    internal class GuardedFieldReferenceUnknownLock : IAnalysisRule
     {
         public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
