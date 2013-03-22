@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
+using ThreadSafetyAnnotations.Engine.Info;
 
 namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {

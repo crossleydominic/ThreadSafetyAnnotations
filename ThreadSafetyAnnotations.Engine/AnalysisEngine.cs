@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Roslyn.Compilers.Common;
+using ThreadSafetyAnnotations.Engine.Info;
 using ThreadSafetyAnnotations.Engine.Rules;
 
 namespace ThreadSafetyAnnotations.Engine

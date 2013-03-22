@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Roslyn.Compilers.CSharp;
 using ThreadSafetyAnnotations.Attributes;
+using ThreadSafetyAnnotations.Engine.Extensions;
+using ThreadSafetyAnnotations.Engine.Info;
 
 namespace ThreadSafetyAnnotations.Engine
 {
@@ -31,30 +33,27 @@ namespace ThreadSafetyAnnotations.Engine
             {
                 VariableDeclaratorSyntax variableDeclaration = node.DescendantNodes().OfType<VariableDeclaratorSyntax>().First();
 
-                FieldSymbol field = (FieldSymbol)_semanticModel.GetDeclaredSymbol(variableDeclaration);
+                FieldSymbol field = (FieldSymbol) _semanticModel.GetDeclaredSymbol(variableDeclaration);
 
                 var attributes = field.GetAttributes();
 
                 foreach (AttributeData attribute in attributes)
                 {
-                    if (string.Equals(attribute.AttributeClass.ContainingAssembly.Name, GuardedByAttributeType.Assembly.GetName().Name, StringComparison.OrdinalIgnoreCase))
+                    if (attribute.IsInstanceOfAttributeType<GuardedByAttribute>())
                     {
-                        if (string.Equals(attribute.AttributeClass.Name, GuardedByAttributeType.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            GuardedFieldInfo guardedField = new GuardedFieldInfo(node, field, attribute, _semanticModel);
+                        GuardedFieldInfo guardedField = new GuardedFieldInfo(node, field, attribute, _semanticModel);
 
-                            _guardedFields.Add(guardedField);
-                        }
-                        else if (string.Equals(attribute.AttributeClass.Name, LockAttributeType.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            LockInfo lockField = new LockInfo(node,field, attribute, _semanticModel);
+                        _guardedFields.Add(guardedField);
+                    }
+                    else if (attribute.IsInstanceOfAttributeType<LockAttribute>())
+                    {
+                        LockInfo lockField = new LockInfo(node, field, attribute, _semanticModel);
 
-                            _locks.Add(lockField);
-                        }
-                        else
-                        {
-                            //do nothing
-                        }
+                        _locks.Add(lockField);
+                    }
+                    else
+                    {
+                        //do nothing
                     }
                 }
 

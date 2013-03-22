@@ -1,6 +1,6 @@
-﻿using Roslyn.Compilers.CSharp;
+using Roslyn.Compilers.CSharp;
 
-namespace ThreadSafetyAnnotations.Engine
+namespace ThreadSafetyAnnotations.Engine.Info
 {
     public class AttributeAssociatedFieldInfo : BaseInfo<FieldDeclarationSyntax, FieldSymbol>
     {
