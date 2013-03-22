@@ -12,13 +12,13 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
         public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             //Get the list of all lock names that are declared on guarded fields
-            IEnumerable<string> requiredLockNames = classInfo.GuardedFields.SelectMany(field => field.Attribute.ConstructorArguments.SelectMany(arg => arg.Values.Select(argVal=>argVal.Value.ToString()))).ToList();
+            IEnumerable<string> requiredLockNames = classInfo.GuardedFields.SelectMany(field => field.DeclaredLockHierarchy).ToList();
 
             //Check that all locks actually protect something
             foreach (LockInfo lockInfo in classInfo.Locks)
             {
                 //see if the current lock is used by any guarded members
-                if (requiredLockNames.Any(rln => rln == lockInfo.Symbol.Name) == false)
+                if (requiredLockNames.Any(rln => rln == lockInfo.Name) == false)
                 {
                     return new Issue(
                         ErrorCode.LOCK_PROTECTS_NOTHING, 

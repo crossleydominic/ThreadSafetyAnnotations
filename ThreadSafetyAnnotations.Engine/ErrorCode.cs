@@ -8,17 +8,26 @@ namespace ThreadSafetyAnnotations.Engine
 {
     public enum ErrorCode
     {
-        [Description("Declared member references unknown lock.")]
-        GUARDED_MEMBER_REFERENCES_UNKNOWN_LOCK,
+        [Description("Guarded field cannot use the same lock more than once.")]
+        GUARDED_FIELD_USES_SAME_LOCK_MORE_THAN_ONCE,
 
-        [Description("Lock is not guarding any member.")]
+        [Description("Lock hierachy conflicts with another Guarded Fields lock hiearchy.")]
+        GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT,
+
+        [Description("Guarded field was accessed outside of a lock statement.")]
+        GUARDED_FIELD_ACCESSED_OUTSIDE_OF_LOCK,
+
+        [Description("Declared field references unknown lock.")]
+        GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK,
+
+        [Description("Lock is not guarding any field.")]
         LOCK_PROTECTS_NOTHING,
 
-        [Description("Guarded member must be declared private.")]
-        GUARDED_MEMBER_IS_NOT_PRIVATE,
+        [Description("Guarded field must be declared private.")]
+        GUARDED_FIELD_IS_NOT_PRIVATE,
 
-        [Description("Guarded member must be protected by at least one lock.")]
-        GUARDED_MEMBER_NOT_ASSOCIATED_WITH_A_LOCK,
+        [Description("Guarded field must be protected by at least one lock.")]
+        GUARDED_FIELD_NOT_ASSOCIATED_WITH_A_LOCK,
 
         [Description("Lock must be declared private.")]
         LOCK_IS_NOT_PRIVATE,
@@ -27,7 +36,7 @@ namespace ThreadSafetyAnnotations.Engine
         LOCK_MUST_BE_SYSTEM_OBJECT,
 
         [Description("Class is not marked with the ThreadSafeAttribute but contains a guarded member.")]
-        GUARDED_MEMBER_IN_A_NON_THREAD_SAFE_CLASS,
+        GUARDED_FIELD_IN_A_NON_THREAD_SAFE_CLASS,
 
         [Description("Class is not marked with the ThreadSafeAttribute but contains a lock.")]
         LOCK_IN_A_NON_THREAD_SAFE_CLASS,

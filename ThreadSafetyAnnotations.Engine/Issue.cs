@@ -46,7 +46,7 @@ namespace ThreadSafetyAnnotations.Engine
             _description = DescriptionResolver.GetDescription(errorCode);
             _syntaxNode = syntaxNode;
             _symbol = symbol;
-            _location = symbol.Locations.First();
+            _location = _symbol.Locations.First();
 
             _sourceLineNumber = GetSourceLineNumber();
             _sourceLineText = GetSourceLineText(_sourceLineNumber);

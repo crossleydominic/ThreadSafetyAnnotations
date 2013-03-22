@@ -89,10 +89,10 @@ namespace ThreadSafetyAnnotations.Engine
         {
             List<ClassInfo> classInfos = new List<ClassInfo>();
 
+            ClassInspector inspector = new ClassInspector(_semanticModel);
+
             foreach (ClassDeclarationSyntax classDeclaration in classDeclarations)
             {
-                ClassInspector inspector = new ClassInspector(_semanticModel);
-
                 classInfos.Add(inspector.GetClassInfo(classDeclaration));
             }
 

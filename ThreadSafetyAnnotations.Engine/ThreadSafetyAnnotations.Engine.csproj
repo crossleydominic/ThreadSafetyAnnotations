@@ -70,6 +70,7 @@
     <Compile Include="Info\BaseInfo.cs" />
     <Compile Include="Info\ClassInfo.cs" />
     <Compile Include="Info\GuardedFieldInfo.cs" />
+    <Compile Include="Info\LockHierarchy.cs" />
     <Compile Include="Info\LockInfo.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,8 +80,10 @@
     <Compile Include="Rules\ClassRules\ClassCannotBePartial.cs" />
     <Compile Include="Rules\ClassRules\ClassCannotBeStatic.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldInNonThreadSafeClass.cs" />
+    <Compile Include="Rules\GuardedFieldRules\GuardedFieldLockHierarchyDeclarationMustNotConflict.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldMustBePrivate.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldMustBeAssociatedWithLock.cs" />
+    <Compile Include="Rules\GuardedFieldRules\GuardedFieldMustUseLockOnlyOnce.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldReferenceUnknownLock.cs" />
     <Compile Include="Rules\IAnalysisRule.cs" />
     <Compile Include="Rules\IAnalysisRuleProvider.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Rules\LockRules\LockMustBePrivate.cs" />
     <Compile Include="Rules\LockRules\LockMustBeSystemObject.cs" />
     <Compile Include="Rules\LockRules\LockProtectsGuardedMember.cs" />
+    <Compile Include="Rules\Usage\GuardedFieldAccessedOutsideOfLock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Attributes\ThreadSafetyAnnotations.Attributes.csproj">

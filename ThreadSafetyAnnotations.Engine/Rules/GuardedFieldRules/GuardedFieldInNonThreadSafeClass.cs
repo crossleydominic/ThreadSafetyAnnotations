@@ -12,7 +12,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
                 classInfo.GuardedFields.Count > 0)
             {
                 return new Issue(
-                    ErrorCode.GUARDED_MEMBER_IN_A_NON_THREAD_SAFE_CLASS,
+                    ErrorCode.GUARDED_FIELD_IN_A_NON_THREAD_SAFE_CLASS,
                     classInfo.Declaration,
                     classInfo.Symbol);
             }

@@ -17,7 +17,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
                 if (fieldInfo.Symbol.DeclaredAccessibility != Accessibility.Private)
                 {
                     return new Issue(
-                        ErrorCode.GUARDED_MEMBER_IS_NOT_PRIVATE,
+                        ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE,
                         fieldInfo.Declaration,
                         fieldInfo.Symbol);
                 }

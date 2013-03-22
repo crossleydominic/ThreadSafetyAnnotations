@@ -115,8 +115,34 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                     [Lock]
                     private object _lock1;
 
-                    [GuardedByAttribute(""_lock1"")]
+                    [Lock]
+                    private object _lock2;
+
+                    [Lock]
+                    private object _lock3;
+
+                    [GuardedBy(""_lock1"", ""_lock2"", ""_lock3"")]
                     private int _data1;
+
+                    [GuardedBy(""_lock1"")]
+                    private int _data2;
+
+                    public int AddData()
+                    {
+                        lock(_lock1)
+                        {
+                            lock(_lock2)
+                            {
+                                lock(_lock3)    
+                                {
+                                    return _data1 + _data2;
+                                }
+                            }
+                        }
+                    }
+
+                    public int Data1{ get { return _data1; } }
+                    public int Data2{ get { return _data2; } }
                 }");
 
             Assert.IsNotNull(issues);

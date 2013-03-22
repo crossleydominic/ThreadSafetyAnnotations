@@ -15,16 +15,13 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
         {
             foreach (var guardedField in classInfo.GuardedFields)
             {
-                //Get list of all lock names that are protecting this field
-                List<string> lockNames = guardedField.Attribute.ConstructorArguments.SelectMany(arg => arg.Values.Select(argVal=>argVal.Value.ToString())).ToList();
-
                 //Check to see if all of the locks are actually declared
-                foreach (string lockName in lockNames)
+                foreach (string lockName in guardedField.DeclaredLockHierarchy)
                 {
-                    if (classInfo.Locks.Any(@lock => @lock.Symbol.Name == lockName) == false)
+                    if (classInfo.Locks.Any(@lock => @lock.Name == lockName) == false)
                     {
                         return new Issue(
-                            ErrorCode.GUARDED_MEMBER_REFERENCES_UNKNOWN_LOCK,
+                            ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK,
                             guardedField.Declaration,
                             guardedField.Symbol);
                     }
