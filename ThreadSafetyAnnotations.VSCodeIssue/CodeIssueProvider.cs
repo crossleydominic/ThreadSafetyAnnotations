@@ -20,8 +20,8 @@ namespace ThreadSafetyAnnotations.VSCodeIssue
             //AnalysisEngine engine = new AnalysisEngine(document);
             AnalysisEngine engine = new AnalysisEngine(
                             document.GetSyntaxTree(),
-                            document.GetSemanticModel());
-            foreach (Issue i in engine.Analzye())
+                            (SemanticModel)document.GetSemanticModel());
+            foreach (Issue i in engine.Analyze())
             {
                 yield return new CodeIssue(CodeIssueKind.Warning, i.SyntaxNode.Span, i.Description);
             }

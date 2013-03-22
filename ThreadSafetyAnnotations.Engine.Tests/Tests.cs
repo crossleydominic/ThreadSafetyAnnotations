@@ -141,10 +141,10 @@ namespace ThreadSafetyAnnotations.Engine.Tests
         {
             List<Issue> issues = Analyze(@"    
                 [ThreadSafe]
-                protected class ClassUnderTest
+                public class ClassUnderTest
                 {
                     [Lock]
-                    public object _lock1;
+                    protected object _lock1;
                 }");
 
             Assert.IsNotNull(issues);
@@ -188,7 +188,10 @@ namespace ThreadSafetyAnnotations.Engine.Tests
         [Test]
         public void LockInNonThreadSafeClass_CausesIssue()
         {
-            List<Issue> issues = Analyze(@"    
+            List<Issue> issues = Analyze(@"   
+
+                public class SomeLockType{}
+                 
                 public class ClassUnderTest
                 {
                     [Lock]
@@ -207,7 +210,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
-                    [GuardedByAttribute("")]
+                    [GuardedByAttribute("""")]
                     public int _data1;
                 }");
 
@@ -224,7 +227,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                 public class ClassUnderTest
                 {
                     //Lock is public, invalid
-                    [GuardedByAttribute("")]
+                    [GuardedByAttribute("""")]
                     protected int _data1;
                 }");
 
@@ -283,7 +286,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests
                 compilation.SyntaxTrees[0],
                 compilation.GetSemanticModel(compilation.SyntaxTrees[0]));
 
-            return engine.Analzye();
+            return engine.Analyze();
         }
     }
 }

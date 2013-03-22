@@ -9,11 +9,6 @@ namespace ThreadSafetyAnnotations.Engine.Rules
 {
     public interface IAnalysisRule
     {
-        List<Issue> Analyze(IBaseInfo target);
-        Type TargetType { get; }
-
-        Type TargetTypeEx { get; }
-
-        List<Issue> AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfoEx classInfo);
+        Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo);
     }
 }

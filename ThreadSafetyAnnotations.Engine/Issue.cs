@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Roslyn.Compilers.Common;
+using Shared.Utilities.Enums;
 
 namespace ThreadSafetyAnnotations.Engine
 {
@@ -18,7 +19,6 @@ namespace ThreadSafetyAnnotations.Engine
         private CommonLocation _location;
 
         public Issue(
-            string description, 
             ErrorCode errorCode,
             CommonSyntaxNode syntaxNode, 
             ISymbol symbol)
@@ -28,11 +28,6 @@ namespace ThreadSafetyAnnotations.Engine
             if (!Enum.IsDefined(typeof(ErrorCode), errorCode))
             {
                 throw new ArgumentException("errorCode is not defined.", "errorCode");
-            }
-
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                throw new ArgumentException("description does not have a value", "description");
             }
 
             if (syntaxNode == null)
@@ -47,8 +42,8 @@ namespace ThreadSafetyAnnotations.Engine
 
             #endregion
 
-            _description = description;
             _errorCode = errorCode;
+            _description = DescriptionResolver.GetDescription(errorCode);
             _syntaxNode = syntaxNode;
             _symbol = symbol;
             _location = symbol.Locations.First();

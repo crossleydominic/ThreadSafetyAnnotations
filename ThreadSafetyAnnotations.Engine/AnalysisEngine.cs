@@ -1,15 +1,13 @@
-﻿using System;
+﻿using System.Reflection;
+using Roslyn.Compilers;
+using Roslyn.Compilers.CSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Roslyn.Services;
-using Roslyn.Compilers.CSharp;
+using System.Threading.Tasks;
 using Roslyn.Compilers.Common;
-using Roslyn.Compilers;
-using ThreadSafetyAnnotations.Engine.Rules.ClassRules;
 using ThreadSafetyAnnotations.Engine.Rules;
-using System.Reflection;
-using ThreadSafetyAnnotations.Attributes;
 
 namespace ThreadSafetyAnnotations.Engine
 {
@@ -18,21 +16,11 @@ namespace ThreadSafetyAnnotations.Engine
         private CommonSyntaxTree _syntaxTree;
         private SemanticModel _semanticModel;
 
-        private static readonly List<IAnalysisRule> _analysisRules;
+        private IAnalysisRuleProvider _ruleProvider;
 
-        static AnalysisEngine()
-        {
-            _analysisRules = new List<IAnalysisRule>();
-            TypeFilter typeFilter = new TypeFilter((t, o) => t == typeof(IAnalysisRule));
-            foreach (Type type in Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.FindInterfaces(typeFilter, null).Any() && t.IsAbstract == false))
-            {
-                _analysisRules.Add((IAnalysisRule)Activator.CreateInstance(type));
-            }
-        }
+        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel) : this (syntaxTree, semanticModel, new AnalysisRuleProvider()){}
 
-        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
+        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel, IAnalysisRuleProvider ruleProvider)
         {
             #region Input validation
 
@@ -50,63 +38,64 @@ namespace ThreadSafetyAnnotations.Engine
 
             _syntaxTree = syntaxTree;
             _semanticModel = semanticModel;
+            _ruleProvider = ruleProvider;
         }
 
-        public List<Issue> Analzye()
+        public bool CanAnalyze
         {
-            AnalysisEngineEx ex = new AnalysisEngineEx(_syntaxTree, _semanticModel);
-            ex.Analyze();
+            get
+            {
+                var diagnostics = _semanticModel.GetDiagnostics();
+                var declarationDiagnostics = _semanticModel.GetDeclarationDiagnostics();
+
+                if (diagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error) ||
+                    declarationDiagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public List<Issue> Analyze()
+        {
+            if(!CanAnalyze)
+            {
+                throw new InvalidOperationException("Pre-existing errors in compilation");
+            }
+
+            List<ClassDeclarationSyntax> classDeclarations = _syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
+
+            List<ClassInfo> classInfos = InspectClassDeclarations(classDeclarations);
 
             List<Issue> issues = new List<Issue>();
 
-            List<ClassInfo> classInfos = DiscoverInformation();
-
             foreach (ClassInfo classInfo in classInfos)
             {
-                foreach (IAnalysisRule rule in _analysisRules.Where(r=>r.TargetType == typeof(ClassInfo)))
-                {
-                    issues.AddRange(rule.Analyze(classInfo));
-                }
+                ClassInfo localClassInfo = classInfo;
+                IEnumerable<Issue> localIssues = _ruleProvider.Rules
+                    .Select(rule => rule.AnalyzeEx(_syntaxTree, _semanticModel, localClassInfo))
+                    .Where(result=>result != null);
 
-                foreach (LockInfo lockInfo in classInfo.Locks)
-                {
-                    foreach (IAnalysisRule rule in _analysisRules.Where(r => r.TargetType == typeof(LockInfo)))
-                    {
-                        issues.AddRange(rule.Analyze(lockInfo));
-                    }
-                }
-
-                foreach (GuardedMemberInfo memberInfo in classInfo.GuardedMembers)
-                {
-                    foreach (IAnalysisRule rule in _analysisRules.Where(r => r.TargetType == typeof(GuardedMemberInfo)))
-                    {
-                        issues.AddRange(rule.Analyze(memberInfo));
-                    }
-                }
+                issues.AddRange(localIssues);
             }
 
             return issues;
-            
         }
 
-        private List<ClassInfo> DiscoverInformation()
+        private List<ClassInfo> InspectClassDeclarations(List<ClassDeclarationSyntax> classDeclarations)
         {
-            List<ClassInfo> classes = new List<ClassInfo>();
+            List<ClassInfo> classInfos = new List<ClassInfo>();
 
-            foreach (ClassDeclarationSyntax classDeclaration in _syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>())
+            foreach (ClassDeclarationSyntax classDeclaration in classDeclarations)
             {
-                ISymbol sym = _semanticModel.GetDeclaredSymbol(classDeclaration);
-                Assembly assembly = Assembly.GetAssembly(typeof(ThreadSafeAttribute));
-                if (assembly.GetTypes().Any(t => t.Name == sym.Name))
-                {
-                    continue;
-                }
-                
+                ClassInspector inspector = new ClassInspector(_semanticModel);
 
-                classes.Add(new ClassInfo(classDeclaration, _semanticModel));
+                classInfos.Add(inspector.GetClassInfo(classDeclaration));
             }
 
-            return classes;
+            return classInfos;
         }
     }
 }

@@ -25,9 +25,9 @@ namespace ThreadSafetyAnnotations.WorkspaceInspector
                         //AnalysisEngine engine = new AnalysisEngine(document);
                         AnalysisEngine engine = new AnalysisEngine(
                             document.GetSyntaxTree(),
-                            document.GetSemanticModel());
+                            (SemanticModel)document.GetSemanticModel());
 
-                        List<Issue> issues = engine.Analzye();
+                        List<Issue> issues = engine.Analyze();
 
                         foreach (Issue issue in issues)
                         {
