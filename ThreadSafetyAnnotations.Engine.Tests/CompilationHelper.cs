@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers;
 using ThreadSafetyAnnotations.Attributes;
+using System.Reflection;
 
 namespace ThreadSafetyAnnotations.Engine.Tests
 {
@@ -31,7 +33,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
             return Compilation.Create("TestCompilation")
                 .AddReferences(new MetadataReference[]
                 {
-                    MetadataFileReference.CreateAssemblyReference("mscorlib"),
+                    new MetadataFileReference(typeof(GuardedByAttribute).Assembly.Location),
                     new MetadataFileReference(@"C:\Dev\MySolutions\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Libs\ThreadSafetyAnnotations.Attributes.dll"), 
                 })
                 .AddSyntaxTrees(tree);
