@@ -61,10 +61,10 @@ namespace ThreadSafetyAnnotations.Engine
 
         public List<Issue> Analyze()
         {
-            if(!CanAnalyze)
+            /*if(!CanAnalyze)
             {
                 throw new InvalidOperationException("Pre-existing errors in compilation");
-            }
+            }*/
 
             List<ClassDeclarationSyntax> classDeclarations = _syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
 
