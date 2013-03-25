@@ -10,20 +10,20 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     internal class GuardedFieldMustBeAssociatedWithLock : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (GuardedFieldInfo guardedField in classInfo.GuardedFields)
             {
                 if (guardedField.DeclaredLockHierarchy.Any() == false)
                 {
-                    return new Issue(
+                    return  new AnalysisResult(new Issue(
                         ErrorCode.GUARDED_FIELD_NOT_ASSOCIATED_WITH_A_LOCK,
                         guardedField.Declaration,
-                        guardedField.Symbol);
+                        guardedField.Symbol));
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }

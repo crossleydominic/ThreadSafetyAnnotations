@@ -11,13 +11,13 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     public class GuardedFieldLockHierarchyDeclarationMustNotConflict : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             //TODO: Refactor this whole method later and make it more robust
 
             if (classInfo.GuardedFields.Count <= 1)
             {
-                return null;
+                return AnalysisResult.Succeeded;
             }
 
             foreach (GuardedFieldInfo first in classInfo.GuardedFields)
@@ -57,16 +57,16 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 
                         if (index < i)
                         {
-                            return new Issue(
+                            return new AnalysisResult( new Issue(
                                 ErrorCode.GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT, 
                                 second.Declaration,
-                                second.Symbol);
+                                second.Symbol));
                         }
                     }
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
 
     }

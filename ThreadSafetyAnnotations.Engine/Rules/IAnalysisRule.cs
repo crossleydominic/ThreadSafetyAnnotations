@@ -10,6 +10,6 @@ namespace ThreadSafetyAnnotations.Engine.Rules
 {
     public interface IAnalysisRule
     {
-        Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo);
+        AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo);
     }
 }

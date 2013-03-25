@@ -10,20 +10,20 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {
     internal class LockMustBePrivate : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (LockInfo lockInfo in classInfo.Locks)
             {
                 if (lockInfo.Symbol.DeclaredAccessibility != Accessibility.Private)
                 {
-                    return new Issue(
+                    return new AnalysisResult(new Issue(
                         ErrorCode.LOCK_IS_NOT_PRIVATE,
                         lockInfo.Declaration,
-                        lockInfo.Symbol);
+                        lockInfo.Symbol));
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }

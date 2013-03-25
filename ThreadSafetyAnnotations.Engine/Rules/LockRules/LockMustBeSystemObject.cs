@@ -10,20 +10,20 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {
     internal class LockMustBeSystemObject : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (LockInfo lockInfo in classInfo.Locks)
             {
                 if (lockInfo.Symbol.Type.SpecialType != Roslyn.Compilers.SpecialType.System_Object)
                 {
-                    return new Issue(
+                    return new AnalysisResult(new Issue(
                         ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT,
                         lockInfo.Declaration,
-                        lockInfo.Symbol);
+                        lockInfo.Symbol));
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
                 .AddReferences(new MetadataReference[]
                 {
                     new MetadataFileReference(typeof(GuardedByAttribute).Assembly.Location),
-                    new MetadataFileReference(@"C:\Dev\MySolutions\ThreadSafetyAnnotations\ThreadSafetyAnnotations.Engine.Tests\Libs\ThreadSafetyAnnotations.Attributes.dll"), 
+                    MetadataFileReference.CreateAssemblyReference("mscorlib")
                 })
                 .AddSyntaxTrees(tree);
         }

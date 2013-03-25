@@ -11,13 +11,13 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
 {
     public class GuardedFieldAccessedOutsideOfLock : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             if (classInfo.HasThreadSafeAttribute == false ||
                 classInfo.GuardedFields.Count == 0 ||
                 classInfo.Locks.Count == 0)
             {
-                return null;
+                return AnalysisResult.Succeeded;
             }
 
             foreach (MethodDeclarationSyntax methodDeclaration in classInfo.Declaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
@@ -28,11 +28,11 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
 
                 if (issue != null)
                 {
-                    return issue;
+                    return new AnalysisResult(issue);
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
 
         private Issue AnalyzeMethod(MethodDeclarationSyntax methodDeclaration, SemanticModel model, DataFlowAnalysis dataFlow, ClassInfo classInfo)

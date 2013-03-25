@@ -10,18 +10,18 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
     internal class ClassCannotBePartial : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             if (classInfo.HasThreadSafeAttribute &&
                 classInfo.Declaration.Modifiers.Any(SyntaxKind.PartialKeyword))
             {
-                return new Issue(
+                return new AnalysisResult(new Issue(
                     ErrorCode.CLASS_CANNOT_BE_PARTIAL,
                     classInfo.Declaration,
-                    classInfo.Symbol);
+                    classInfo.Symbol));
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }

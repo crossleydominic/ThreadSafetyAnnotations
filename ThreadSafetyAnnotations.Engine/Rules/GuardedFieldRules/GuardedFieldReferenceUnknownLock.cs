@@ -11,7 +11,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     internal class GuardedFieldReferenceUnknownLock : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (var guardedField in classInfo.GuardedFields)
             {
@@ -20,15 +20,15 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
                 {
                     if (classInfo.Locks.Any(@lock => @lock.Name == lockName) == false)
                     {
-                        return new Issue(
+                        return new AnalysisResult(new Issue(
                             ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK,
                             guardedField.Declaration,
-                            guardedField.Symbol);
+                            guardedField.Symbol));
                     }
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }

@@ -74,12 +74,15 @@ namespace ThreadSafetyAnnotations.Engine
 
             foreach (ClassInfo classInfo in classInfos)
             {
-                ClassInfo localClassInfo = classInfo;
-                IEnumerable<Issue> localIssues = _ruleProvider.Rules
-                    .Select(rule => rule.AnalyzeEx(_syntaxTree, _semanticModel, localClassInfo))
-                    .Where(result=>result != null);
+                foreach (IAnalysisRule rule in _ruleProvider.Rules)
+                {
+                    AnalysisResult result = rule.AnalyzeEx(_syntaxTree, _semanticModel, classInfo);
 
-                issues.AddRange(localIssues);
+                    if (!result.Success)
+                    {
+                        issues.AddRange(result.Issues);
+                    }
+                }
             }
 
             return issues;

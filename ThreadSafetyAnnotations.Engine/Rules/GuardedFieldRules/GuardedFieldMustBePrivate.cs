@@ -10,20 +10,20 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     internal class GuardedFieldMustBePrivate : IAnalysisRule
     {
-        public Issue AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (GuardedFieldInfo fieldInfo in classInfo.GuardedFields)
             {
                 if (fieldInfo.Symbol.DeclaredAccessibility != Accessibility.Private)
                 {
-                    return new Issue(
+                    return new AnalysisResult(new Issue(
                         ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE,
                         fieldInfo.Declaration,
-                        fieldInfo.Symbol);
+                        fieldInfo.Symbol));
                 }
             }
 
-            return null;
+            return AnalysisResult.Succeeded;
         }
     }
 }
