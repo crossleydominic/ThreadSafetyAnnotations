@@ -29,39 +29,12 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
                         continue;
                     }
 
-                    List<string> firstList = first.DeclaredLockHierarchy.ToList();
-                    List<string> secondList = second.DeclaredLockHierarchy.ToList();
-
-                    List<string> longer, shorter;
-
-                    if (firstList.Count >= secondList.Count)
+                    if (LockHierarchy.Conflicts(first.DeclaredLockHierarchy, second.DeclaredLockHierarchy))
                     {
-                        longer = firstList;
-                        shorter = secondList;
-                    }
-                    else
-                    {
-                        longer = secondList;
-                        shorter = firstList;
-                    }
-
-                    for (int i = 0; i < shorter.Count; i++)
-                    {
-                        string currentShorter = shorter[i];
-
-                        int index = longer.IndexOf(currentShorter);
-                        if (index == -1)
-                        {
-                            continue;
-                        }
-
-                        if (index < i)
-                        {
-                            return new AnalysisResult( new Issue(
-                                ErrorCode.GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT, 
-                                second.Declaration,
-                                second.Symbol));
-                        }
+                        return new AnalysisResult(new Issue(
+                            ErrorCode.GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT,
+                            second.Declaration,
+                            second.Symbol));
                     }
                 }
             }

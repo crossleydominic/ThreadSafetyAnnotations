@@ -1,12 +1,8 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Roslyn.Compilers;
-using Roslyn.Compilers.CSharp;
 using NUnit.Framework;
 
-namespace ThreadSafetyAnnotations.Engine.Tests
+namespace ThreadSafetyAnnotations.Engine.Tests.Rules
 {
     [TestFixture]
     public class ClassRuleTests

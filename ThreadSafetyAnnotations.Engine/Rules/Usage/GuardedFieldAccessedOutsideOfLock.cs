@@ -49,7 +49,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
                 if (foundGuardedField != null)
                 {
                     //We must be inside a lock statement
-                    LockHierarchy controlFlowHierarchy = LockHierarchy.FromIdentifierName(identifierName);
+                    LockHierarchy controlFlowHierarchy = CreateLockHiearchyFromIdentifier(identifierName);
 
                     bool lockHierarchySatisfied = LockHierarchy.IsSatisfiedBy(foundGuardedField.DeclaredLockHierarchy, controlFlowHierarchy);
 
@@ -64,6 +64,33 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
             }
 
             return null;
+        }
+
+        private LockHierarchy CreateLockHiearchyFromIdentifier(IdentifierNameSyntax identifier)
+        {
+            //Go up the syntax tree looking at locks and record them in 
+            //LAST TO FIRST order 
+            List<string> lastToFirstLockList = new List<string>();
+            SyntaxNode currentNode = identifier;
+            do
+            {
+                currentNode = currentNode.Ancestors().OfType<LockStatementSyntax>().FirstOrDefault();
+
+                if (currentNode != null)
+                {
+                    string lockName = currentNode.DescendantNodes()
+                        .OfType<IdentifierNameSyntax>()
+                        .First().Identifier.ValueText;
+
+                    lastToFirstLockList.Add(lockName);
+                }
+
+            } while (currentNode != null);
+
+            //Reverse list to put it in locks taken FIRST-TO-LAST order
+            lastToFirstLockList.Reverse();
+
+            return LockHierarchy.FromStringList(lastToFirstLockList);
         }
     }
 }

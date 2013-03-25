@@ -4,21 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Roslyn.Compilers.CSharp;
+using Shared.Utilities;
 
 namespace ThreadSafetyAnnotations.Engine.Info
 {
+    /// <summary>
+    /// Represents an ordered hierarchy of locks
+    /// </summary>
     public class LockHierarchy : IEnumerable<string>
     {
-        private List<string> _generalToSpecificLockList;
+        #region Private members
 
+        /// <summary>
+        /// A set of locks in a hierarchy. Ordered in first-to-last taken order;
+        /// </summary>
+        private List<string> _firstToLastLockList;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Only allow creation through static helper methods, not through the constructor directly
+        /// </summary>
         private LockHierarchy()
         {
-            _generalToSpecificLockList = new List<string>();
+            _firstToLastLockList = new List<string>();
         }
+
+        #endregion
+
+        #region Public methods
 
         public IEnumerator<string> GetEnumerator()
         {
-            return _generalToSpecificLockList.GetEnumerator();
+            return _firstToLastLockList.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -28,52 +48,39 @@ namespace ThreadSafetyAnnotations.Engine.Info
 
         public int Count
         {
-            get { return _generalToSpecificLockList.Count; }
+            get { return _firstToLastLockList.Count; }
         }
 
         public string this[int i] 
         {
-            get { return _generalToSpecificLockList[i]; }
+            get { return _firstToLastLockList[i]; }
         }
 
-        public static LockHierarchy FromStringList(List<string> locks)
+        #endregion
+
+        #region Static helper methods
+
+        /// <summary>
+        /// Construct a LockHierarchy from a list of lock names
+        /// </summary>
+        public static LockHierarchy FromStringList(IEnumerable<string> locks)
         {
+            #region Input Validation
+
+            Insist.IsNotNull(locks, "locks");
+
+            #endregion
+
             LockHierarchy hierarchy = new LockHierarchy();
-            hierarchy._generalToSpecificLockList.AddRange(locks);
+            hierarchy._firstToLastLockList.AddRange(locks);
 
             return hierarchy;
         }
 
-        public static LockHierarchy FromIdentifierName(IdentifierNameSyntax identifier)
-        {
-            LockHierarchy hierarchy = new LockHierarchy();
-
-            //Go up the syntax tree looking at locks and record them in 
-            //SPECIFIC TO GENERAL order
-            List<string> specificToGeneralLockList = new List<string>();
-            SyntaxNode currentNode = identifier;
-            do
-            {
-                currentNode = currentNode.Ancestors().OfType<LockStatementSyntax>().FirstOrDefault();
-
-                if (currentNode != null)
-                {
-                    string lockName = currentNode.DescendantNodes()
-                        .OfType<IdentifierNameSyntax>()
-                        .First().Identifier.ValueText;
-
-                    specificToGeneralLockList.Add(lockName);
-                }
-
-            } while (currentNode != null);
-
-            specificToGeneralLockList.Reverse();
-
-            hierarchy._generalToSpecificLockList.AddRange(specificToGeneralLockList);
-
-            return hierarchy;
-        }
-
+        /// <summary>
+        /// Compares two lock hierachies to determine if one of them satisfies the requirement 
+        /// of the other
+        /// </summary>
         public static bool IsSatisfiedBy(LockHierarchy requiredHierarchy, LockHierarchy actualHierarchy)
         {
             int currentIndex = 0;
@@ -99,5 +106,45 @@ namespace ThreadSafetyAnnotations.Engine.Info
 
             return true;
         }
+
+        public static bool Conflicts(LockHierarchy h1, LockHierarchy h2)
+        {
+
+            List<string> firstList = h1._firstToLastLockList;
+            List<string> secondList = h2._firstToLastLockList;
+
+            List<string> longer, shorter;
+
+            if (firstList.Count >= secondList.Count)
+            {
+                longer = firstList;
+                shorter = secondList;
+            }
+            else
+            {
+                longer = secondList;
+                shorter = firstList;
+            }
+
+            for (int i = 0; i < shorter.Count; i++)
+            {
+                string currentShorter = shorter[i];
+
+                int index = longer.IndexOf(currentShorter);
+                if (index == -1)
+                {
+                    continue;
+                }
+
+                if (index < i)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }

@@ -63,10 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompilationHelper.cs" />
-    <Compile Include="ClassRuleTests.cs" />
-    <Compile Include="GuardedFieldRuleTests.cs" />
-    <Compile Include="LockRuleTests.cs" />
+    <Compile Include="Info\LockHierarchyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\ClassRuleTests.cs" />
+    <Compile Include="Rules\GuardedFieldRuleTests.cs" />
+    <Compile Include="Rules\LockRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Engine\ThreadSafetyAnnotations.Engine.csproj">
