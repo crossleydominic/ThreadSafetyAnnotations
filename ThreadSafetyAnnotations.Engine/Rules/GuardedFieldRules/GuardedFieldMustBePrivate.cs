@@ -10,7 +10,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     internal class GuardedFieldMustBePrivate : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (GuardedFieldInfo fieldInfo in classInfo.GuardedFields)
             {

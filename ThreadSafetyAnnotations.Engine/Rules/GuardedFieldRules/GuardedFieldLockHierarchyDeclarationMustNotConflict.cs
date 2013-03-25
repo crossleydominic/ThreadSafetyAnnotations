@@ -11,7 +11,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     public class GuardedFieldLockHierarchyDeclarationMustNotConflict : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             //TODO: Refactor this whole method later and make it more robust
 

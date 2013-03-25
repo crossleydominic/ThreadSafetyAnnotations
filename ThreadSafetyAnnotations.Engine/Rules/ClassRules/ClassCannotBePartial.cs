@@ -10,7 +10,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.ClassRules
 {
     internal class ClassCannotBePartial : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             if (classInfo.HasThreadSafeAttribute &&
                 classInfo.Declaration.Modifiers.Any(SyntaxKind.PartialKeyword))

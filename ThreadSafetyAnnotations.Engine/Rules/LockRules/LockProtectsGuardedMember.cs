@@ -9,7 +9,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {
     internal class LockProtectsGuardedMember : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             //Get the list of all lock names that are declared on guarded fields
             IEnumerable<string> requiredLockNames = classInfo.GuardedFields.SelectMany(field => field.DeclaredLockHierarchy).ToList();

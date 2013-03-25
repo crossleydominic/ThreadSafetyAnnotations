@@ -76,7 +76,7 @@ namespace ThreadSafetyAnnotations.Engine
             {
                 foreach (IAnalysisRule rule in _ruleProvider.Rules)
                 {
-                    AnalysisResult result = rule.AnalyzeEx(_syntaxTree, _semanticModel, classInfo);
+                    AnalysisResult result = rule.Analyze(_syntaxTree, _semanticModel, classInfo);
 
                     if (!result.Success)
                     {

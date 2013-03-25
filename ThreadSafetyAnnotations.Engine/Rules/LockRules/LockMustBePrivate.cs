@@ -10,7 +10,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {
     internal class LockMustBePrivate : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (LockInfo lockInfo in classInfo.Locks)
             {

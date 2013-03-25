@@ -11,7 +11,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.GuardedFieldRules
 {
     internal class GuardedFieldReferenceUnknownLock : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             foreach (var guardedField in classInfo.GuardedFields)
             {

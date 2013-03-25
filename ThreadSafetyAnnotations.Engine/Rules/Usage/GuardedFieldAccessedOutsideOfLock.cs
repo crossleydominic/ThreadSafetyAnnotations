@@ -11,7 +11,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
 {
     public class GuardedFieldAccessedOutsideOfLock : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             if (classInfo.HasThreadSafeAttribute == false ||
                 classInfo.GuardedFields.Count == 0 ||

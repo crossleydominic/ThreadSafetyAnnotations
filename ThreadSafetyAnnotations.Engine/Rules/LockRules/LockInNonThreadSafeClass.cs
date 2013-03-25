@@ -6,7 +6,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.LockRules
 {
     internal class LockInNonThreadSafeClass : IAnalysisRule
     {
-        public AnalysisResult AnalyzeEx(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
+        public AnalysisResult Analyze(CommonSyntaxTree tree, SemanticModel model, ClassInfo classInfo)
         {
             if (classInfo.HasThreadSafeAttribute == false &&
                 classInfo.Locks.Count > 0)
