@@ -109,37 +109,23 @@ namespace ThreadSafetyAnnotations.Engine.Info
 
         public static bool Conflicts(LockHierarchy h1, LockHierarchy h2)
         {
-
-            List<string> firstList = h1._firstToLastLockList;
-            List<string> secondList = h2._firstToLastLockList;
-
-            List<string> longer, shorter;
-
-            if (firstList.Count >= secondList.Count)
+            int foundPosition = 0;
+            
+            foreach (string lockName in h1._firstToLastLockList)
             {
-                longer = firstList;
-                shorter = secondList;
-            }
-            else
-            {
-                longer = secondList;
-                shorter = firstList;
-            }
-
-            for (int i = 0; i < shorter.Count; i++)
-            {
-                string currentShorter = shorter[i];
-
-                int index = longer.IndexOf(currentShorter);
-                if (index == -1)
+                int currentIndex = h2._firstToLastLockList.IndexOf(lockName);
+                
+                if (currentIndex == -1)
                 {
                     continue;
                 }
 
-                if (index < i)
+                if (currentIndex < foundPosition)
                 {
                     return true;
                 }
+
+                foundPosition = currentIndex;
             }
 
             return false;

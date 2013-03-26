@@ -32,5 +32,46 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Info
 
             Assert.AreEqual(expectedOutcome, result);
         }
+
+        [Test]
+        [TestCase("lock1", "", false)]
+        [TestCase("lock1", "lock2", false)]
+        [TestCase("lock1", "lock1", false)]
+
+        [TestCase("lock1|lock2", "", false)]
+        [TestCase("lock1|lock2", "lock1", false)]
+        [TestCase("lock1|lock2", "lock2", false)]
+        [TestCase("lock1|lock2", "lock1|lock2", false)]
+        [TestCase("lock1|lock2", "lock2|lock1", true)]
+
+        [TestCase("lock1|lock2|lock3", "", false)]
+        [TestCase("lock1|lock2|lock3", "lock1", false)]
+        [TestCase("lock1|lock2|lock3", "lock2", false)]
+        [TestCase("lock1|lock2|lock3", "lock3", false)]
+        [TestCase("lock1|lock2|lock3", "lock1|lock2", false)]
+        [TestCase("lock1|lock2|lock3", "lock2|lock1", true)]
+        [TestCase("lock1|lock2|lock3", "lock1|lock2|lock3", false)]
+        [TestCase("lock1|lock2|lock3", "lock3|lock1|lock2", true)]
+        [TestCase("lock1|lock2|lock3", "lock3|lock2|lock1", true)]
+
+        [TestCase("lock1|lock2|lock3", "lock4|lock1", false)]
+        [TestCase("lock1|lock2|lock3", "lock4|lock1|lock5", false)]
+        [TestCase("lock1|lock2|lock3", "lock4|lock1|lock5|lock2|lock6|lock3", false)]
+        [TestCase("lock1|lock2|lock3", "lock4|lock1|lock5|lock3|lock6|lock2", true)]
+
+        [TestCase("lock1|lock2|lock3", "lock4|lock5|lock6", false)]
+        public void Conflicts_Test(string h1, string h2, bool expectedOutcome)
+        {
+            List<string> first = h1.Split('|').ToList();
+            List<string> second = h2.Split('|').ToList();
+
+            bool result = LockHierarchy.Conflicts(LockHierarchy.FromStringList(first), LockHierarchy.FromStringList(second));
+
+            Assert.AreEqual(expectedOutcome, result);
+
+            result = LockHierarchy.Conflicts(LockHierarchy.FromStringList(second), LockHierarchy.FromStringList(first));
+
+            Assert.AreEqual(expectedOutcome, result);
+        }
     }
 }
