@@ -22,9 +22,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
 
             foreach (MethodDeclarationSyntax methodDeclaration in classInfo.Declaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
             {
-                DataFlowAnalysis dataFlow = model.AnalyzeDataFlow(methodDeclaration.Body);
-                
-                Issue issue = AnalyzeMethod(methodDeclaration, model, dataFlow, classInfo);
+                Issue issue = AnalyzeMethod(methodDeclaration, model, classInfo);
 
                 if (issue != null)
                 {
@@ -35,7 +33,7 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
             return AnalysisResult.Succeeded;
         }
 
-        private Issue AnalyzeMethod(MethodDeclarationSyntax methodDeclaration, SemanticModel model, DataFlowAnalysis dataFlow, ClassInfo classInfo)
+        private Issue AnalyzeMethod(MethodDeclarationSyntax methodDeclaration, SemanticModel model, ClassInfo classInfo)
         {
             var identifiers = methodDeclaration.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
 
