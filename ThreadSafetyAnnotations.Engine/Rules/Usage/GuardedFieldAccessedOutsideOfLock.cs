@@ -69,21 +69,18 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
             //Go up the syntax tree looking at locks and record them in 
             //LAST TO FIRST order 
             List<string> lastToFirstLockList = new List<string>();
-            SyntaxNode currentNode = identifier;
-            do
+            
+            //Assuming this traverses the tree upwards and reports nodes in order
+            var lockStatements = identifier.Ancestors().OfType<LockStatementSyntax>();
+
+            foreach (LockStatementSyntax lockStatement in lockStatements)
             {
-                currentNode = currentNode.Ancestors().OfType<LockStatementSyntax>().FirstOrDefault();
+                string lockName = lockStatement.DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .First().Identifier.ValueText;
 
-                if (currentNode != null)
-                {
-                    string lockName = currentNode.DescendantNodes()
-                        .OfType<IdentifierNameSyntax>()
-                        .First().Identifier.ValueText;
-
-                    lastToFirstLockList.Add(lockName);
-                }
-
-            } while (currentNode != null);
+                lastToFirstLockList.Add(lockName);
+            }
 
             //Reverse list to put it in locks taken FIRST-TO-LAST order
             lastToFirstLockList.Reverse();
