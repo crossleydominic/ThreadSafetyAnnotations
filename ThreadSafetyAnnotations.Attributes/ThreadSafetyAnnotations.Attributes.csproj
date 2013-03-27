@@ -53,8 +53,8 @@
     <PostBuildEvent>del /F /Q $(SolutionDir)ThreadSafetyAnnotations.Engine.Tests\Libs\ThreadSafetyAnnotations.Attributes.dll
 xcopy $(TargetPath) $(SolutionDir)ThreadSafetyAnnotations.Engine.Tests\Libs\ /Y
 
-del /F /Q $(SolutionDir)ThreadSafetyAnnotations.Consumer.LinkedListExample\Libs\ThreadSafetyAnnotations.Attributes.dll
-xcopy $(TargetPath) $(SolutionDir)ThreadSafetyAnnotations.Consumer.LinkedListExample\Libs\ /Y
+del /F /Q $(SolutionDir)ThreadSafetyAnnotations.Consumer.ConcurrentListExample\Libs\ThreadSafetyAnnotations.Attributes.dll
+xcopy $(TargetPath) $(SolutionDir)ThreadSafetyAnnotations.Consumer.ConcurrentListExample\Libs\ /Y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

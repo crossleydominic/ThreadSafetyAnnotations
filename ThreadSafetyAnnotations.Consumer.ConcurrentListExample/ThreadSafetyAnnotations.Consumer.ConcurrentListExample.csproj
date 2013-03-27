@@ -1,20 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A0AE1ECA-7F24-499B-82CE-22D0DC6B9E5A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6771A967-C4F2-4472-8832-AED6EDF124CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ThreadSafetyAnnotations.CompileConsole</RootNamespace>
-    <AssemblyName>ThreadSafetyAnnotations.CompileConsole</AssemblyName>
+    <RootNamespace>ThreadSafetyAnnotations.Consumer.ConcurrentListExample</RootNamespace>
+    <AssemblyName>ThreadSafetyAnnotations.Consumer.ConcurrentListExample</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,8 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,24 +37,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Roslyn.Compilers" />
-    <Reference Include="Roslyn.Compilers.CSharp" />
-    <Reference Include="Roslyn.Services" />
-    <Reference Include="Roslyn.Services.CSharp" />
+    <Reference Include="ThreadSafetyAnnotations.Attributes">
+      <HintPath>Libs\ThreadSafetyAnnotations.Attributes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ConcurrentList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThreadSafetyAnnotations.Engine\ThreadSafetyAnnotations.Engine.csproj">
-      <Project>{BA0F69C5-76CB-4A02-BB83-559EEA88D844}</Project>
-      <Name>ThreadSafetyAnnotations.Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThreadSafetyAnnotations.WorkspaceInspector\ThreadSafetyAnnotations.WorkspaceInspector.csproj">
-      <Project>{0f244c48-9635-44ce-ab42-b090905ee403}</Project>
-      <Name>ThreadSafetyAnnotations.WorkspaceInspector</Name>
-    </ProjectReference>
+    <Content Include="AssemblyReferencing.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,6 +19,12 @@ namespace ThreadSafetyAnnotations.VisualStudioCodeIssue
             AnalysisEngine engine = new AnalysisEngine(
                    document.GetSyntaxTree(),
                    (SemanticModel)document.GetSemanticModel());
+
+            if (!engine.CanAnalyze)
+            {
+                yield return null;
+            }
+
             foreach (Issue i in engine.Analyze())
             {
                 yield return new CodeIssue(CodeIssueKind.Warning, i.SyntaxNode.Span, i.Description);

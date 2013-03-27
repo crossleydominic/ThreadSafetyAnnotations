@@ -59,8 +59,9 @@ namespace ThreadSafetyAnnotations.Engine
             }
         }
 
-        public List<Issue> Analyze()
+        public AnalysisResult Analyze()
         {
+            //TODO: Remove this once Symbol loading has been made defensive for nulls later on
             if(!CanAnalyze)
             {
                 throw new InvalidOperationException("Pre-existing errors in compilation");
@@ -85,7 +86,14 @@ namespace ThreadSafetyAnnotations.Engine
                 }
             }
 
-            return issues;
+            if (issues.Count > 0)
+            {
+                return new AnalysisResult(issues);
+            }
+            else
+            {
+                return AnalysisResult.Succeeded;
+            }
         }
 
         private List<ClassInfo> InspectClassDeclarations(List<ClassDeclarationSyntax> classDeclarations)

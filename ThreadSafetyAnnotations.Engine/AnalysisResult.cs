@@ -1,11 +1,8 @@
-﻿using Shared.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Utilities;
 
-namespace ThreadSafetyAnnotations.Engine.Rules
+namespace ThreadSafetyAnnotations.Engine
 {
     public class AnalysisResult
     {

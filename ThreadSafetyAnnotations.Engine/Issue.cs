@@ -55,7 +55,7 @@ namespace ThreadSafetyAnnotations.Engine
 
         private string GetSourceLineText(int lineNumber)
         {
-            return _location.SourceTree.GetText().GetLineFromLineNumber(lineNumber).Extent.ToString().Trim();
+            return _location.SourceTree.GetText().GetLineFromLineNumber(lineNumber).ToString().Trim();
         }
 
         private int GetSourceLineNumber()

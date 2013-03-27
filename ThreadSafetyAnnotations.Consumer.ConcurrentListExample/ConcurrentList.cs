@@ -8,6 +8,8 @@ using ThreadSafetyAnnotations.Attributes;
 
 namespace ThreadSafetyAnnotations.Consumer.LinkedListExample
 {
+    //Try commenting out some of the locks below and running either the InspectionConsole or CompileConsole
+
     [ThreadSafe]
     public class ConcurrentList<T>
     {
