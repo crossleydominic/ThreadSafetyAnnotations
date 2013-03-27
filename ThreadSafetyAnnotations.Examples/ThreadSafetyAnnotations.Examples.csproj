@@ -7,8 +7,8 @@
     <ProjectGuid>{6771A967-C4F2-4472-8832-AED6EDF124CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ThreadSafetyAnnotations.Consumer.ConcurrentListExample</RootNamespace>
-    <AssemblyName>ThreadSafetyAnnotations.Consumer.ConcurrentListExample</AssemblyName>
+    <RootNamespace>ThreadSafetyAnnotations.Examples</RootNamespace>
+    <AssemblyName>ThreadSafetyAnnotations.Examples</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
