@@ -41,6 +41,9 @@ namespace ThreadSafetyAnnotations.Engine
         [Description("Class is not marked with the ThreadSafeAttribute but contains a lock.")]
         LOCK_IN_A_NON_THREAD_SAFE_CLASS,
 
+        [Description("Class is marked with ThreadSafe attribute but contains no Locks or Guarded fields.")]
+        CLASS_MUST_HAVE_LOCKS_OR_GUARDED_FIELDS,
+
         [Description("Classes marked with the ThreadSafe attribute cannot be partial.")]
         CLASS_CANNOT_BE_PARTIAL,
 

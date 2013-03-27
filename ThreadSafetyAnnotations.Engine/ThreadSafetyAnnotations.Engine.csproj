@@ -79,6 +79,7 @@
     <Compile Include="Rules\ClassRules\ClassCannotBeAbstract.cs" />
     <Compile Include="Rules\ClassRules\ClassCannotBePartial.cs" />
     <Compile Include="Rules\ClassRules\ClassCannotBeStatic.cs" />
+    <Compile Include="Rules\ClassRules\ClassMustHaveLocksOrGuardedFields.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldInNonThreadSafeClass.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldLockHierarchyDeclarationMustNotConflict.cs" />
     <Compile Include="Rules\GuardedFieldRules\GuardedFieldMustBePrivate.cs" />

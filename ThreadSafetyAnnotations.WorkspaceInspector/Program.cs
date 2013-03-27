@@ -16,8 +16,8 @@ namespace ThreadSafetyAnnotations.WorkspaceInspector
         {
             try
             {
-                IWorkspace workspace = Workspace.LoadStandAloneProject(args[0]);
-
+                IWorkspace workspace = Workspace.LoadStandAloneProject(Environment.CurrentDirectory + "../../../../ThreadSafetyAnnotations.Consumer.LinkedListExample/ThreadSafetyAnnotations.Consumer.LinkedListExample.csproj");
+                
                 foreach (IProject project in workspace.CurrentSolution.Projects)
                 {
                     foreach (IDocument document in project.Documents)
@@ -41,8 +41,11 @@ namespace ThreadSafetyAnnotations.WorkspaceInspector
             }
             catch (Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
+
+            Console.WriteLine("Inspection complete. Press any key to exit.");
+            Console.ReadKey();
         }
     }
 }

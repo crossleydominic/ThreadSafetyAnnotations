@@ -20,9 +20,15 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
                 return AnalysisResult.Succeeded;
             }
 
-            foreach (MethodDeclarationSyntax methodDeclaration in classInfo.Declaration.DescendantNodes().OfType<MethodDeclarationSyntax>())
+            //TODO: Improve this so that we only obtain the internal blocks from each method/property/indexer
+            IEnumerable<MemberDeclarationSyntax> nodesToInspect = classInfo.Declaration.DescendantNodes().Where(
+                node => node is MethodDeclarationSyntax || 
+                    node is PropertyDeclarationSyntax || 
+                    node is IndexerDeclarationSyntax).Cast<MemberDeclarationSyntax>().ToList();
+
+            foreach (MemberDeclarationSyntax memberDeclaration in nodesToInspect)
             {
-                Issue issue = AnalyzeMethod(methodDeclaration, model, classInfo);
+                Issue issue = AnalyzeMethod(memberDeclaration, model, classInfo);
 
                 if (issue != null)
                 {
@@ -33,9 +39,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
             return AnalysisResult.Succeeded;
         }
 
-        private Issue AnalyzeMethod(MethodDeclarationSyntax methodDeclaration, SemanticModel model, ClassInfo classInfo)
+        private Issue AnalyzeMethod(MemberDeclarationSyntax memberDeclaration, SemanticModel model, ClassInfo classInfo)
         {
-            var identifiers = methodDeclaration.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
+            var identifiers = memberDeclaration.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
 
             foreach (IdentifierNameSyntax identifierName in identifiers)
             {
@@ -55,8 +61,8 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
                     {
                         return new Issue(
                             ErrorCode.GUARDED_FIELD_ACCESSED_OUTSIDE_OF_LOCK, 
-                            foundGuardedField.Declaration,
-                            foundGuardedField.Symbol);
+                            identifierName,
+                            identifierSymbol.Symbol);
                     }
                 }
             }

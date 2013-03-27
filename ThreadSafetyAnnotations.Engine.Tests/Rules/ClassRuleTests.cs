@@ -8,6 +8,20 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
     public class ClassRuleTests
     {
         [Test]
+        public void ClassWithThreadSafeAttributeButNoLocksOrGuardedMembers()
+        {
+            List<Issue> issues = CompilationHelper.Analyze(@" 
+                [ThreadSafe]   
+                public class ClassUnderTest
+                {
+                }");
+
+            Assert.IsNotNull(issues);
+            Assert.AreEqual(1, issues.Count); 
+            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_MUST_HAVE_LOCKS_OR_GUARDED_FIELDS));
+        }
+
+        [Test]
         public void ClassNotUsingThreadSafety()
         {
             List<Issue> issues = CompilationHelper.Analyze(@"    
