@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Roslyn.Compilers.CSharp;
 using ThreadSafetyAnnotations.Attributes;
 using ThreadSafetyAnnotations.Engine.Extensions;
@@ -59,33 +60,7 @@ namespace ThreadSafetyAnnotations.Engine
 
                 base.VisitFieldDeclaration(node);
             }
-
-            public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
-            {
-                IEnumerable<AccessorDeclarationSyntax> accessors = node.DescendantNodes().OfType<AccessorDeclarationSyntax>();
-
-                List<BlockSyntax> blocks = accessors.Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault()).ToList();
-
-                base.VisitPropertyDeclaration(node);
-            }
-
-            public override void VisitIndexerDeclaration(IndexerDeclarationSyntax node)
-            {
-                IEnumerable<AccessorDeclarationSyntax> accessors = node.DescendantNodes().OfType<AccessorDeclarationSyntax>();
-
-                List<BlockSyntax> blocks = accessors.Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault()).ToList();
-
-
-                base.VisitIndexerDeclaration(node);
-            }
-
-            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
-            {
-                BlockSyntax implementationBlock = node.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault();
-
-                base.VisitMethodDeclaration(node);
-            }
-
+            
             public List<LockInfo> Locks { get { return _locks; } }
             public List<GuardedFieldInfo> GuardedFields { get { return _guardedFields; } }
         }
