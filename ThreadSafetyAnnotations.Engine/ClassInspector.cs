@@ -62,16 +62,27 @@ namespace ThreadSafetyAnnotations.Engine
 
             public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
             {
+                IEnumerable<AccessorDeclarationSyntax> accessors = node.DescendantNodes().OfType<AccessorDeclarationSyntax>();
+
+                List<BlockSyntax> blocks = accessors.Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault()).ToList();
+
                 base.VisitPropertyDeclaration(node);
             }
 
             public override void VisitIndexerDeclaration(IndexerDeclarationSyntax node)
             {
+                IEnumerable<AccessorDeclarationSyntax> accessors = node.DescendantNodes().OfType<AccessorDeclarationSyntax>();
+
+                List<BlockSyntax> blocks = accessors.Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault()).ToList();
+
+
                 base.VisitIndexerDeclaration(node);
             }
 
             public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
             {
+                BlockSyntax implementationBlock = node.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault();
+
                 base.VisitMethodDeclaration(node);
             }
 

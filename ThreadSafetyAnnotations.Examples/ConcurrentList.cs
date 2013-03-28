@@ -74,39 +74,5 @@ namespace ThreadSafetyAnnotations.Consumer.LinkedListExample
                 return _internalList.IndexOf(item);
             }
         }
-
-        public void Insert(int index, T item)
-        {
-            lock (_lock)
-            {
-                _internalList.Insert(index, item);
-            }
-        }
-
-        public void RemoveAt(int index)
-        {
-            lock (_lock)
-            {
-                _internalList.RemoveAt(index);
-            }
-        }
-
-        public T this[int index]
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _internalList[index];
-                }
-            }
-            set
-            {
-                lock (_lock)
-                {
-                    _internalList[index] = value;
-                }
-            }
-        }
     }
 }

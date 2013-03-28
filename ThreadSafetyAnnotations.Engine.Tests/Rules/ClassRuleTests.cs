@@ -168,7 +168,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                                     }
                                 }
                             }
-                        } 
+                        }
                     }
 
                     public int Data2
