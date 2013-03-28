@@ -73,6 +73,7 @@
     <Compile Include="Info\GuardedFieldInfo.cs" />
     <Compile Include="Info\LockHierarchy.cs" />
     <Compile Include="Info\LockInfo.cs" />
+    <Compile Include="Info\MemberInfo.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\AnalysisRuleProvider.cs" />

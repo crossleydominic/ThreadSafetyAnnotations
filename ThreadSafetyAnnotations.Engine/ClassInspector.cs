@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,12 +23,50 @@ namespace ThreadSafetyAnnotations.Engine
             private SemanticModel _semanticModel;
             private List<GuardedFieldInfo> _guardedFields;
             private List<LockInfo> _locks;
+            private List<MemberInfo> _members;
 
             public ClassWalker(SemanticModel semanticModel)
             {
                 _semanticModel = semanticModel;
                 _guardedFields = new List<GuardedFieldInfo>();
                 _locks = new List<LockInfo>();
+                _members = new List<MemberInfo>();
+            }
+
+            private void VisitIndexerOrPropertyDeclarationSyntax(MemberDeclarationSyntax node)
+            {
+                IEnumerable<BlockSyntax> accessorBlocks = node.DescendantNodes()
+                    .OfType<AccessorDeclarationSyntax>()
+                    .Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault());
+
+                Symbol symbol = _semanticModel.GetDeclaredSymbol(node);
+
+                _members.Add(new MemberInfo(node, symbol, _semanticModel, accessorBlocks));
+            }
+
+            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+            {
+                BlockSyntax accessorBlock = node.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault();
+
+                Symbol symbol = _semanticModel.GetDeclaredSymbol(node);
+
+                _members.Add(new MemberInfo(node, symbol, _semanticModel, new List<BlockSyntax>(){ accessorBlock }));
+
+                base.VisitMethodDeclaration(node);
+            }
+
+            public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+            {
+                VisitIndexerOrPropertyDeclarationSyntax(node);
+                
+                base.VisitPropertyDeclaration(node);
+            }
+
+            public override void VisitIndexerDeclaration(IndexerDeclarationSyntax node)
+            {
+                VisitIndexerOrPropertyDeclarationSyntax(node);
+
+                base.VisitIndexerDeclaration(node);
             }
 
             public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
@@ -63,6 +102,7 @@ namespace ThreadSafetyAnnotations.Engine
             
             public List<LockInfo> Locks { get { return _locks; } }
             public List<GuardedFieldInfo> GuardedFields { get { return _guardedFields; } }
+            public List<MemberInfo> Members { get { return _members; } }
         }
 
         public ClassInspector(SemanticModel semanticModel)
@@ -79,6 +119,7 @@ namespace ThreadSafetyAnnotations.Engine
 
             classInfo.Locks.AddRange(_walker.Locks);
             classInfo.GuardedFields.AddRange(_walker.GuardedFields);
+            classInfo.Members.AddRange(_walker.Members);
 
             foreach (LockInfo lockInfo in classInfo.Locks)
             {
@@ -88,6 +129,11 @@ namespace ThreadSafetyAnnotations.Engine
             foreach (GuardedFieldInfo fieldInfo in classInfo.GuardedFields)
             {
                 fieldInfo.Parent = classInfo;
+            }
+
+            foreach (MemberInfo memberInfo in classInfo.Members)
+            {
+                memberInfo.Parent = classInfo;
             }
 
             return classInfo;

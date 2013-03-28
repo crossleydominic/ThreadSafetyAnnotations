@@ -153,7 +153,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                             }
                         }
                     }
-
+//public int this[int index]{get{return 1;} set{bool ff = true;}}
                     public int Data1    
                     { 
                         get 

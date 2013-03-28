@@ -20,15 +20,9 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
                 return AnalysisResult.Succeeded;
             }
 
-            //TODO: Improve this so that we only obtain the internal blocks from each method/property/indexer
-            IEnumerable<MemberDeclarationSyntax> nodesToInspect = classInfo.Declaration.DescendantNodes().Where(
-                node => node is MethodDeclarationSyntax || 
-                    node is PropertyDeclarationSyntax || 
-                    node is IndexerDeclarationSyntax).Cast<MemberDeclarationSyntax>().ToList();
-
-            foreach (MemberDeclarationSyntax memberDeclaration in nodesToInspect)
+            foreach (MemberInfo memberInfo in classInfo.Members)
             {
-                Issue issue = AnalyzeMethod(memberDeclaration, model, classInfo);
+                Issue issue = AnalyzeMember(memberInfo, model, classInfo);
 
                 if (issue != null)
                 {
@@ -39,30 +33,33 @@ namespace ThreadSafetyAnnotations.Engine.Rules.Usage
             return AnalysisResult.Succeeded;
         }
 
-        private Issue AnalyzeMethod(MemberDeclarationSyntax memberDeclaration, SemanticModel model, ClassInfo classInfo)
+        private Issue AnalyzeMember(MemberInfo memberInfo, SemanticModel model, ClassInfo classInfo)
         {
-            var identifiers = memberDeclaration.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
-
-            foreach (IdentifierNameSyntax identifierName in identifiers)
+            foreach (BlockSyntax block in memberInfo.Blocks)
             {
-                SymbolInfo identifierSymbol = model.GetSymbolInfo(identifierName);
+                var identifiers = block.DescendantNodes().OfType<IdentifierNameSyntax>().ToList();
 
-                //Does this symbol refer to a GuardedField?
-                GuardedFieldInfo foundGuardedField = classInfo.GuardedFields.FirstOrDefault(field => field.Symbol == identifierSymbol.Symbol);
-
-                if (foundGuardedField != null)
+                foreach (IdentifierNameSyntax identifierName in identifiers)
                 {
-                    //We must be inside a lock statement
-                    LockHierarchy controlFlowHierarchy = CreateLockHiearchyFromIdentifier(identifierName);
+                    SymbolInfo identifierSymbol = model.GetSymbolInfo(identifierName);
 
-                    bool lockHierarchySatisfied = LockHierarchy.IsSatisfiedBy(foundGuardedField.DeclaredLockHierarchy, controlFlowHierarchy);
+                    //Does this symbol refer to a GuardedField?
+                    GuardedFieldInfo foundGuardedField = classInfo.GuardedFields.FirstOrDefault(field => field.Symbol == identifierSymbol.Symbol);
 
-                    if (!lockHierarchySatisfied)
+                    if (foundGuardedField != null)
                     {
-                        return new Issue(
-                            ErrorCode.GUARDED_FIELD_ACCESSED_OUTSIDE_OF_LOCK, 
-                            identifierName,
-                            identifierSymbol.Symbol);
+                        //We must be inside a lock statement
+                        LockHierarchy controlFlowHierarchy = CreateLockHiearchyFromIdentifier(identifierName);
+
+                        bool lockHierarchySatisfied = LockHierarchy.IsSatisfiedBy(foundGuardedField.DeclaredLockHierarchy, controlFlowHierarchy);
+
+                        if (!lockHierarchySatisfied)
+                        {
+                            return new Issue(
+                                ErrorCode.GUARDED_FIELD_ACCESSED_OUTSIDE_OF_LOCK,
+                                identifierName,
+                                identifierSymbol.Symbol);
+                        }
                     }
                 }
             }
