@@ -68,6 +68,7 @@
     <Compile Include="Rules\ClassRuleTests.cs" />
     <Compile Include="Rules\GuardedFieldRuleTests.cs" />
     <Compile Include="Rules\LockRuleTests.cs" />
+    <Compile Include="Rules\UsageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreadSafetyAnnotations.Engine\ThreadSafetyAnnotations.Engine.csproj">

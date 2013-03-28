@@ -8,7 +8,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
     public class ClassRuleTests
     {
         [Test]
-        public void ClassWithThreadSafeAttributeButNoLocksOrGuardedMembers()
+        public void ClassWithThreadSafeAttributeButNoLocksOrGuardedMembers_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@" 
                 [ThreadSafe]   
@@ -23,7 +23,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void ClassNotUsingThreadSafety()
+        public void ClassNotUsingThreadSafety_PassesAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 public class ClassUnderTest
@@ -46,7 +46,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void AbstractClass_CausesIssue()
+        public void AbstractClass_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -73,7 +73,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void StaticClass_CausesIssue()
+        public void StaticClass_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -96,7 +96,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void PartialClass_CausesIssue()
+        public void PartialClass_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -117,74 +117,5 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
             Assert.GreaterOrEqual(result.Issues.Count, 1);
             Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_PARTIAL));
         }
-
-        [Test]
-        public void ClassWithCorrectUsage()
-        {
-            AnalysisResult result = CompilationHelper.Analyze(@"    
-                [ThreadSafe]
-                public class ClassUnderTest
-                {
-                    [Lock]
-                    private object _lock1;
-
-                    [Lock]
-                    private object _lock2;
-
-                    [Lock]
-                    private object _lock3;
-
-                    [GuardedBy(""_lock1"", ""_lock2"", ""_lock3"")]
-                    private int _data1;
-
-                    [GuardedBy(""_lock1"")]
-                    private int _data2;
-
-                    public int AddData()
-                    {
-                        lock(_lock1)
-                        {
-                            lock(_lock2)
-                            {
-                                lock(_lock3)    
-                                {
-                                    return _data1 + _data2;
-                                }
-                            }
-                        }
-                    }
-//public int this[int index]{get{return 1;} set{bool ff = true;}}
-                    public int Data1    
-                    { 
-                        get 
-                        { 
-                            lock(_lock1)
-                            {
-                                lock(_lock2)
-                                {
-                                    lock(_lock3)    
-                                    {
-                                        return _data1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    public int Data2
-                    { 
-                        get 
-                        { 
-                            lock(_lock1)
-                            {
-                                return _data2;  
-                            }
-                        } 
-                    }
-                }");
-
-            Assert.IsTrue(result.Success);
-        }
-
     }
 }

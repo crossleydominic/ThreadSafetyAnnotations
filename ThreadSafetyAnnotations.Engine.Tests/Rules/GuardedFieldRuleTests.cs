@@ -8,7 +8,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
     public class GuardedFieldRuleTests
     {
         [Test]
-        public void GuardedMemberInNonThreadSafeClass_CausesIssue()
+        public void GuardedFieldInNonThreadSafeClass_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 public class ClassUnderTest
@@ -24,7 +24,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
         
         [Test]
-        public void PublicGuardedField_CausesIssue()
+        public void PublicGuardedField_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -41,7 +41,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void ProtectedGuardedField_CausesIssue()
+        public void ProtectedGuardedField_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -59,7 +59,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
         
         [Test]
-        public void GuardedFieldWithUnknownLockName_CausesIssue()
+        public void GuardedFieldWithUnknownLockName_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -81,7 +81,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void GuardedFieldWithEmptyLockName_CausesIssue()
+        public void GuardedFieldWithEmptyLockName_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -103,7 +103,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void GuardedFieldUsesSameLockMoreThanOnce_CausesIssue()
+        public void GuardedFieldUsesSameLockMoreThanOnce_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -126,7 +126,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
 
 
         [Test]
-        public void GuardedFieldCausesLockHierarchyConflict_CausesIssue()
+        public void GuardedFieldCausesLockHierarchyConflict_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -155,7 +155,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void GuardedFieldWithLockHierarchySubset_DoesNotCausesIssue()
+        public void GuardedFieldWithLockHierarchySubset_PassesAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]

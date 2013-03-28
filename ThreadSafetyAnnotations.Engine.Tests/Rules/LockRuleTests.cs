@@ -8,7 +8,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
     public class LockRuleTests
     {
         [Test]
-        public void ClassWithPublicLock_CausesIssue()
+        public void ClassWithPublicLock_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -25,7 +25,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void ClassWithLockProtectingNothing_CausesIssue()
+        public void ClassWithLockProtectingNothing_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -42,7 +42,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void ClassWithProtectedLock_CausesIssue()
+        public void ClassWithProtectedLock_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
@@ -59,7 +59,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void ClassWithNonObjectLock_CausesIssue()
+        public void ClassWithNonObjectLock_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"   
                 [ThreadSafe]
@@ -78,7 +78,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         }
 
         [Test]
-        public void LockInNonThreadSafeClass_CausesIssue()
+        public void LockInNonThreadSafeClass_FailsAnalysis()
         {
             AnalysisResult result = CompilationHelper.Analyze(@"   
 
