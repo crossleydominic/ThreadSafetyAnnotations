@@ -39,7 +39,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
                 .AddSyntaxTrees(tree);
         }
         
-        public static List<Issue> Analyze(string testClassString)
+        public static AnalysisResult Analyze(string testClassString)
         {
             Compilation compilation = CompilationHelper.Create(testClassString);
 

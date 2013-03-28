@@ -60,6 +60,21 @@ namespace ThreadSafetyAnnotations.Engine
                 base.VisitFieldDeclaration(node);
             }
 
+            public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+            {
+                base.VisitPropertyDeclaration(node);
+            }
+
+            public override void VisitIndexerDeclaration(IndexerDeclarationSyntax node)
+            {
+                base.VisitIndexerDeclaration(node);
+            }
+
+            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+            {
+                base.VisitMethodDeclaration(node);
+            }
+
             public List<LockInfo> Locks { get { return _locks; } }
             public List<GuardedFieldInfo> GuardedFields { get { return _guardedFields; } }
         }

@@ -10,22 +10,23 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         [Test]
         public void GuardedMemberInNonThreadSafeClass_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 public class ClassUnderTest
                 {
                     [GuardedByAttribute(""_lock1"")]
                     public int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IN_A_NON_THREAD_SAFE_CLASS));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IN_A_NON_THREAD_SAFE_CLASS));
         }
         
         [Test]
         public void PublicGuardedField_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -33,15 +34,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE));
         }
 
         [Test]
         public void ProtectedGuardedField_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -50,15 +52,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     protected int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_IS_NOT_PRIVATE));
         }
         
         [Test]
         public void GuardedFieldWithUnknownLockName_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -71,15 +74,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     private int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK));
         }
 
         [Test]
         public void GuardedFieldWithEmptyLockName_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -92,15 +96,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     private int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_REFERENCES_UNKNOWN_LOCK));
         }
 
         [Test]
         public void GuardedFieldUsesSameLockMoreThanOnce_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -113,16 +118,17 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     private int _data1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_USES_SAME_LOCK_MORE_THAN_ONCE));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_USES_SAME_LOCK_MORE_THAN_ONCE));
         }
 
 
         [Test]
         public void GuardedFieldCausesLockHierarchyConflict_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -142,15 +148,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     private int _data2;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.GUARDED_FIELD_LOCK_HIERARCHY_DECLARATION_CONFLICT));
         }
 
         [Test]
         public void GuardedFieldWithLockHierarchySubset_DoesNotCausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -170,8 +177,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     private int _data2;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(0, issues.Count);
+            Assert.IsTrue(result.Success);
         }
     }
 }

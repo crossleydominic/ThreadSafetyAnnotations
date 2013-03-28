@@ -10,21 +10,22 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         [Test]
         public void ClassWithThreadSafeAttributeButNoLocksOrGuardedMembers()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@" 
+            AnalysisResult result = CompilationHelper.Analyze(@" 
                 [ThreadSafe]   
                 public class ClassUnderTest
                 {
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count); 
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_MUST_HAVE_LOCKS_OR_GUARDED_FIELDS));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.AreEqual(1, result.Issues.Count);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.CLASS_MUST_HAVE_LOCKS_OR_GUARDED_FIELDS));
         }
 
         [Test]
         public void ClassNotUsingThreadSafety()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 public class ClassUnderTest
                 {
                     public object _someObj;
@@ -41,14 +42,13 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public int Data2{ get { return _data2; } }
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(0, issues.Count);
+            Assert.IsTrue(result.Success);
         }
 
         [Test]
         public void AbstractClass_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public abstract class ClassUnderTest
                 {
@@ -66,15 +66,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public int Data2{ get { return _data2; } }
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_ABSTRACT));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_ABSTRACT));
         }
 
         [Test]
         public void StaticClass_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public static class ClassUnderTest
                 {
@@ -88,15 +89,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public static int _data2;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_STATIC));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_STATIC));
         }
 
         [Test]
         public void PartialClass_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public partial class ClassUnderTest
                 {
@@ -110,15 +112,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public static int _data2;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_PARTIAL));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.CLASS_CANNOT_BE_PARTIAL));
         }
 
         [Test]
         public void ClassWithCorrectUsage()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -151,12 +154,36 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                         }
                     }
 
-                    public int Data1{ get { return _data1; } }
-                    public int Data2{ get { return _data2; } }
+                    public int Data1    
+                    { 
+                        get 
+                        { 
+                            lock(_lock1)
+                            {
+                                lock(_lock2)
+                                {
+                                    lock(_lock3)    
+                                    {
+                                        return _data1;
+                                    }
+                                }
+                            }
+                        } 
+                    }
+
+                    public int Data2
+                    { 
+                        get 
+                        { 
+                            lock(_lock1)
+                            {
+                                return _data2;  
+                            }
+                        } 
+                    }
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(0, issues.Count);
+            Assert.IsTrue(result.Success);
         }
 
     }

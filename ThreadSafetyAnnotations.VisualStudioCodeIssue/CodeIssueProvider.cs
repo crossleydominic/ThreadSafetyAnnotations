@@ -17,17 +17,25 @@ namespace ThreadSafetyAnnotations.VisualStudioCodeIssue
         public IEnumerable<CodeIssue> GetIssues(IDocument document, CommonSyntaxNode node, CancellationToken cancellationToken)
         {
             AnalysisEngine engine = new AnalysisEngine(
-                   document.GetSyntaxTree(),
-                   (SemanticModel)document.GetSemanticModel());
+                document.GetSyntaxTree(),
+                (SemanticModel) document.GetSemanticModel());
 
             if (!engine.CanAnalyze)
             {
                 yield return null;
             }
 
-            foreach (Issue i in engine.Analyze())
+            AnalysisResult result = engine.Analyze();
+
+            if (result.Success)
             {
-                yield return new CodeIssue(CodeIssueKind.Warning, i.SyntaxNode.Span, i.Description);
+                yield return null;
+            }
+
+            foreach (Issue issue in result.Issues)
+            {
+                yield return new CodeIssue(CodeIssueKind.Warning, issue.SyntaxNode.Span, issue.Description);
+
             }
         }
 

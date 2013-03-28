@@ -10,7 +10,7 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
         [Test]
         public void ClassWithPublicLock_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -18,15 +18,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public object _lock1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IS_NOT_PRIVATE));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IS_NOT_PRIVATE));
         }
 
         [Test]
         public void ClassWithLockProtectingNothing_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -34,31 +35,33 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public object _lock1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_PROTECTS_NOTHING));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.LOCK_PROTECTS_NOTHING));
         }
 
         [Test]
         public void ClassWithProtectedLock_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"    
+            AnalysisResult result = CompilationHelper.Analyze(@"    
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
                     [Lock]
                     protected object _lock1;
                 }");
-
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IS_NOT_PRIVATE));
+            
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IS_NOT_PRIVATE));
         }
 
         [Test]
         public void ClassWithNonObjectLock_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"   
+            AnalysisResult result = CompilationHelper.Analyze(@"   
                 [ThreadSafe]
                 public class ClassUnderTest
                 {
@@ -68,15 +71,16 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
 
                 public class SomeLockType : Object { }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.LOCK_MUST_BE_SYSTEM_OBJECT));
         }
 
         [Test]
         public void LockInNonThreadSafeClass_CausesIssue()
         {
-            List<Issue> issues = CompilationHelper.Analyze(@"   
+            AnalysisResult result = CompilationHelper.Analyze(@"   
 
                 public class SomeLockType{}
                  
@@ -86,9 +90,10 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Rules
                     public SomeLockType _lock1;
                 }");
 
-            Assert.IsNotNull(issues);
-            Assert.GreaterOrEqual(issues.Count, 1);
-            Assert.IsTrue(issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IN_A_NON_THREAD_SAFE_CLASS));
+            Assert.IsFalse(result.Success);
+            Assert.IsNotNull(result.Issues);
+            Assert.GreaterOrEqual(result.Issues.Count, 1);
+            Assert.IsTrue(result.Issues.Any(i => i.ErrorCode == ErrorCode.LOCK_IN_A_NON_THREAD_SAFE_CLASS));
         }
     }
 }
