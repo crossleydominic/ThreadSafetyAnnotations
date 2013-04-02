@@ -34,7 +34,7 @@ namespace ThreadSafetyAnnotations.VisualStudioCodeIssue
                 {
                     foreach (Issue issue in result.Issues)
                     {
-                        yield return new CodeIssue(CodeIssueKind.Warning, issue.SyntaxNode.Span, issue.Description);
+                        yield return new CodeIssue(CodeIssueKind.Error, issue.SyntaxNode.Span, issue.Description);
                     }
                 }
             }

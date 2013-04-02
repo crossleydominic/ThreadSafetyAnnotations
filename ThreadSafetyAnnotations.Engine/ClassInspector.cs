@@ -37,8 +37,10 @@ namespace ThreadSafetyAnnotations.Engine
                     .Select(a => a.DescendantNodes().OfType<BlockSyntax>().FirstOrDefault());
 
                 Symbol symbol = _semanticModel.GetDeclaredSymbol(node);
-
-                _members.Add(new MemberInfo(node, symbol, _semanticModel, accessorBlocks));
+                if (symbol != null)
+                {
+                    _members.Add(new MemberInfo(node, symbol, _semanticModel, accessorBlocks));
+                }
             }
 
             public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
@@ -47,7 +49,13 @@ namespace ThreadSafetyAnnotations.Engine
 
                 Symbol symbol = _semanticModel.GetDeclaredSymbol(node);
 
-                _members.Add(new MemberInfo(node, symbol, _semanticModel, new List<BlockSyntax>(){ accessorBlock }));
+                if (symbol != null)
+                {
+                    _members.Add(new MemberInfo(node, symbol, _semanticModel, new List<BlockSyntax>()
+                    {
+                        accessorBlock
+                    }));
+                }
 
                 base.VisitMethodDeclaration(node);
             }
@@ -72,28 +80,31 @@ namespace ThreadSafetyAnnotations.Engine
 
                 FieldSymbol field = (FieldSymbol) _semanticModel.GetDeclaredSymbol(variableDeclaration);
 
-                var attributes = field.GetAttributes();
-
-                foreach (AttributeData attribute in attributes)
+                if (field != null)
                 {
-                    if (attribute.IsInstanceOfAttributeType<GuardedByAttribute>())
-                    {
-                        GuardedFieldInfo guardedField = new GuardedFieldInfo(node, field, attribute, _semanticModel);
 
-                        _guardedFields.Add(guardedField);
-                    }
-                    else if (attribute.IsInstanceOfAttributeType<LockAttribute>())
-                    {
-                        LockInfo lockField = new LockInfo(node, field, attribute, _semanticModel);
+                    var attributes = field.GetAttributes();
 
-                        _locks.Add(lockField);
-                    }
-                    else
+                    foreach (AttributeData attribute in attributes)
                     {
-                        //do nothing
+                        if (attribute.IsInstanceOfAttributeType<GuardedByAttribute>())
+                        {
+                            GuardedFieldInfo guardedField = new GuardedFieldInfo(node, field, attribute, _semanticModel);
+
+                            _guardedFields.Add(guardedField);
+                        }
+                        else if (attribute.IsInstanceOfAttributeType<LockAttribute>())
+                        {
+                            LockInfo lockField = new LockInfo(node, field, attribute, _semanticModel);
+
+                            _locks.Add(lockField);
+                        }
+                        else
+                        {
+                            //do nothing
+                        }
                     }
                 }
-
                 base.VisitFieldDeclaration(node);
             }
             
