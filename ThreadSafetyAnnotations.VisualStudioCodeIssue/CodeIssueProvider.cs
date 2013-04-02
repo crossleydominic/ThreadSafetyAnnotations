@@ -14,28 +14,29 @@ namespace ThreadSafetyAnnotations.VisualStudioCodeIssue
     [ExportCodeIssueProvider("ThreadSafetyAnnotations.VisualStudioCodeIssue", LanguageNames.CSharp)]
     class CodeIssueProvider : ICodeIssueProvider
     {
+        private AnalysisEngine _engine;
+
+        public CodeIssueProvider()
+        {
+            _engine = new AnalysisEngine();
+        }
+
         public IEnumerable<CodeIssue> GetIssues(IDocument document, CommonSyntaxNode node, CancellationToken cancellationToken)
         {
-            AnalysisEngine engine = new AnalysisEngine(
-                document.GetSyntaxTree(),
-                (SemanticModel) document.GetSemanticModel());
+            CommonSyntaxTree syntaxTree = document.GetSyntaxTree();
+            SemanticModel semanticModel = (SemanticModel) document.GetSemanticModel();
 
-            if (!engine.CanAnalyze)
+            if (_engine.CanAnalyze(syntaxTree, semanticModel))
             {
-                yield return null;
-            }
+                AnalysisResult result = _engine.Analyze(syntaxTree, semanticModel);
 
-            AnalysisResult result = engine.Analyze();
-
-            if (result.Success)
-            {
-                yield return null;
-            }
-
-            foreach (Issue issue in result.Issues)
-            {
-                yield return new CodeIssue(CodeIssueKind.Warning, issue.SyntaxNode.Span, issue.Description);
-
+                if (!result.Success)
+                {
+                    foreach (Issue issue in result.Issues)
+                    {
+                        yield return new CodeIssue(CodeIssueKind.Warning, issue.SyntaxNode.Span, issue.Description);
+                    }
+                }
             }
         }
 

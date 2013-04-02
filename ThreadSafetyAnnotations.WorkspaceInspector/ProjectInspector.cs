@@ -20,13 +20,11 @@ namespace ThreadSafetyAnnotations.WorkspaceInspector
 
             List<AnalysisResult> analysisResults = new List<AnalysisResult>();
 
+            AnalysisEngine engine = new AnalysisEngine();
+
             foreach (IDocument document in project.Documents)
             {
-                AnalysisEngine engine = new AnalysisEngine(
-                    document.GetSyntaxTree(),
-                    (SemanticModel) document.GetSemanticModel());
-
-                AnalysisResult analysisResult = engine.Analyze();
+                AnalysisResult analysisResult = engine.Analyze(document.GetSyntaxTree(),(SemanticModel) document.GetSemanticModel());
 
                 analysisResults.Add(analysisResult);
             }

@@ -43,11 +43,9 @@ namespace ThreadSafetyAnnotations.Engine.Tests.Boilerplate
         {
             Compilation compilation = CompilationHelper.Create(testClassString);
 
-            AnalysisEngine engine = new AnalysisEngine(
-                compilation.SyntaxTrees[0],
-                compilation.GetSemanticModel(compilation.SyntaxTrees[0]));
+            AnalysisEngine engine = new AnalysisEngine();
 
-            return engine.Analyze();
+            return engine.Analyze(compilation.SyntaxTrees[0],compilation.GetSemanticModel(compilation.SyntaxTrees[0]));
         }
 
         private static string GetProgramText(string testClassString)

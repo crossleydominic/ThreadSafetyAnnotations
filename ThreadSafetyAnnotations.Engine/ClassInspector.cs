@@ -12,9 +12,6 @@ namespace ThreadSafetyAnnotations.Engine
 {
     public class ClassInspector
     {
-        private static readonly Type GuardedByAttributeType = typeof (GuardedByAttribute);
-        private static readonly Type LockAttributeType = typeof (LockAttribute);
-
         private SemanticModel _semanticModel;
         private ClassWalker _walker;
 

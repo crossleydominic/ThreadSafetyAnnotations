@@ -14,62 +14,40 @@ namespace ThreadSafetyAnnotations.Engine
 {
     public class AnalysisEngine
     {
-        private CommonSyntaxTree _syntaxTree;
-        private SemanticModel _semanticModel;
-
         private IAnalysisRuleProvider _ruleProvider;
 
-        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel) : this (syntaxTree, semanticModel, new AnalysisRuleProvider()){}
+        public AnalysisEngine() : this (new AnalysisRuleProvider()){}
 
-        public AnalysisEngine(CommonSyntaxTree syntaxTree, SemanticModel semanticModel, IAnalysisRuleProvider ruleProvider)
+        public AnalysisEngine(IAnalysisRuleProvider ruleProvider)
         {
-            #region Input validation
-
-            if (syntaxTree == null)
-            {
-                throw new ArgumentNullException("syntaxTree");
-            }
-
-            if (semanticModel == null)
-            {
-                throw new ArgumentNullException("semanticModel");
-            }
-
-            #endregion
-
-            _syntaxTree = syntaxTree;
-            _semanticModel = semanticModel;
             _ruleProvider = ruleProvider;
         }
 
-        public bool CanAnalyze
+        public bool CanAnalyze(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
         {
-            get
+            var diagnostics = semanticModel.GetDiagnostics();
+            var declarationDiagnostics = semanticModel.GetDeclarationDiagnostics();
+
+            if (diagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error) ||
+                declarationDiagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error))
             {
-                var diagnostics = _semanticModel.GetDiagnostics();
-                var declarationDiagnostics = _semanticModel.GetDeclarationDiagnostics();
-
-                if (diagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error) ||
-                    declarationDiagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error))
-                {
-                    return false;
-                }
-
-                return true;
+                return false;
             }
+
+            return true;
         }
 
-        public AnalysisResult Analyze()
+        public AnalysisResult Analyze(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
         {
             //TODO: Remove this once Symbol loading has been made defensive for nulls later on
-            if(!CanAnalyze)
+            if(!CanAnalyze(syntaxTree, semanticModel))
             {
                 throw new InvalidOperationException("Pre-existing errors in compilation");
             }
 
-            List<ClassDeclarationSyntax> classDeclarations = _syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
+            List<ClassDeclarationSyntax> classDeclarations = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
 
-            List<ClassInfo> classInfos = InspectClassDeclarations(classDeclarations);
+            List<ClassInfo> classInfos = InspectClassDeclarations(semanticModel, classDeclarations);
 
             List<Issue> issues = new List<Issue>();
 
@@ -77,7 +55,7 @@ namespace ThreadSafetyAnnotations.Engine
             {
                 foreach (IAnalysisRule rule in _ruleProvider.Rules)
                 {
-                    AnalysisResult result = rule.Analyze(_syntaxTree, _semanticModel, classInfo);
+                    AnalysisResult result = rule.Analyze(syntaxTree, semanticModel, classInfo);
 
                     if (!result.Success)
                     {
@@ -96,11 +74,11 @@ namespace ThreadSafetyAnnotations.Engine
             }
         }
 
-        private List<ClassInfo> InspectClassDeclarations(List<ClassDeclarationSyntax> classDeclarations)
+        private List<ClassInfo> InspectClassDeclarations(SemanticModel semanticModel, List<ClassDeclarationSyntax> classDeclarations)
         {
             List<ClassInfo> classInfos = new List<ClassInfo>();
 
-            ClassInspector inspector = new ClassInspector(_semanticModel);
+            ClassInspector inspector = new ClassInspector(semanticModel);
 
             foreach (ClassDeclarationSyntax classDeclaration in classDeclarations)
             {
