@@ -23,28 +23,8 @@ namespace ThreadSafetyAnnotations.Engine
             _ruleProvider = ruleProvider;
         }
 
-        public bool CanAnalyze(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
-        {
-            var diagnostics = semanticModel.GetDiagnostics();
-            var declarationDiagnostics = semanticModel.GetDeclarationDiagnostics();
-
-            if (diagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error) ||
-                declarationDiagnostics.Any(d => d.Info.Severity == DiagnosticSeverity.Error))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public AnalysisResult Analyze(CommonSyntaxTree syntaxTree, SemanticModel semanticModel)
         {
-            //TODO: Remove this once Symbol loading has been made defensive for nulls later on
-            if(!CanAnalyze(syntaxTree, semanticModel))
-            {
-                throw new InvalidOperationException("Pre-existing errors in compilation");
-            }
-
             List<ClassDeclarationSyntax> classDeclarations = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().ToList();
 
             List<ClassInfo> classInfos = InspectClassDeclarations(semanticModel, classDeclarations);

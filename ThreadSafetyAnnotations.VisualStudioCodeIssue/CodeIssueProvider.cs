@@ -26,16 +26,13 @@ namespace ThreadSafetyAnnotations.VisualStudioCodeIssue
             CommonSyntaxTree syntaxTree = document.GetSyntaxTree();
             SemanticModel semanticModel = (SemanticModel) document.GetSemanticModel();
 
-            if (_engine.CanAnalyze(syntaxTree, semanticModel))
-            {
-                AnalysisResult result = _engine.Analyze(syntaxTree, semanticModel);
+            AnalysisResult result = _engine.Analyze(syntaxTree, semanticModel);
 
-                if (!result.Success)
+            if (!result.Success)
+            {
+                foreach (Issue issue in result.Issues)
                 {
-                    foreach (Issue issue in result.Issues)
-                    {
-                        yield return new CodeIssue(CodeIssueKind.Error, issue.SyntaxNode.Span, issue.Description);
-                    }
+                    yield return new CodeIssue(CodeIssueKind.Error, issue.SyntaxNode.Span, issue.Description);
                 }
             }
         }
