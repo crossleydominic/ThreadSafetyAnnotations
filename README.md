@@ -1,7 +1,7 @@
 Thread Safety Annotations for C#
 ================================
 
-This is an experimental library to allow C# classes to be marked up with a set of custom attributes that express **very** basic locking policies.  These locking policies can be statically checked at compile time to ensure that a classes implementation is thread safe.  The library was built in order to learn about the Roslyn API and the type of added functionality that it will allow.
+This is a proof of concept library to allow C# classes to be marked up with a set of custom attributes that express **very** basic locking policies.  These locking policies can be statically checked at compile time to ensure that a classes implementation is thread safe.  The library was built in order to learn about the Roslyn API and the type of added functionality that it will allow.
 
 This library is build on top of the C# compiler-as-a-service ([Roslyn](http://msdn.microsoft.com/en-gb/roslyn)).
 
@@ -11,9 +11,9 @@ How it works
 ============
 
 Custom attributes can be used to make up a class and it's fields to define a simple locking policy.
-- ThreadSafeAttribute - Should be added to the definition of a class.  This attribute is used as a marker to indicate that the class will be analysed.
-- LockAttribute - Used to indicate that the object will be used as the synchronization root as the target of a lock(){...} statement
-- GuardedByAttribute - Should be added to any of a classes fields that will be accessed from multiple threads. The attribute allows for the name of a lock (or locks) to be associated with the field.  The analysis engine will disallow any accesses of the field unless its corresponding lock is taken.
+- **ThreadSafeAttribute** - Should be added to the definition of a class.  This attribute is used as a marker to indicate that the class will be analysed.
+- **LockAttribute** - Used to indicate that the associated object will be used as the synchronization root for a member variable.  It can be referenced by name as the part of a [GuardedBy(...)] attribute for a member variable. 
+- **GuardedByAttribute** - Should be added to any field of a class that will be accessed from multiple threads. The attribute allows for the name of a lock (or locks) to be associated with the field.  The analysis engine will disallow any accesses of the field unless its corresponding lock is taken.
 
 Once a class has been marked up with the custom attributes which define the basic locking policies then it becomes possible to check all of the classes methods and properties to ensure that the locking policy is being followed. For instance, if we wanted to ensure that a field is only accessed when it's lock it's taken then we could declare the fields like this
 
@@ -41,7 +41,7 @@ This will compile successfully
         }
     }
     
-But if I'd written some code that uses _data and I'd forgottent to take the lock then compilcation will fail
+But if the developer had forgotten to take the lock whilst accessing the data member then a compile time error is generated.
 
     public void AddToData(int value)
     {
@@ -54,7 +54,7 @@ The GuardedByAttribute can also be used to define simple lock hierarchies.
     [GuardedBy("_lock1", "_lock2")]
     private SomeObject _data;
     
-Now it's not possible to access _data without taking both _lock1 and _lock2 and the locks must be taken in that order.  
+It's not possible to access _data without taking both _lock1 and _lock2 and the locks must be taken in that order.  
 
 Declaration of fields that lead to conflicting lock hierarchies will also cause a compilation error
 
